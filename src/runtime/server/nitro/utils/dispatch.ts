@@ -68,7 +68,12 @@ export const dispatchValidatedEvent = async (eventName: string, schema: ZodSchem
   const { data, error } = await schema.safeParseAsync(payload)
 
   if (error) {
-    throw createError(error)
+    throw createError({
+      statusCode: 422,
+      statusMessage: 'Unprocessable Entity',
+      message: error.message || 'Unexpected Entity - Unknown',
+      cause: error,
+    })
   }
   const queue = useQueue(queueName)
   if (!queue) {
