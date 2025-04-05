@@ -1,0 +1,58 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - name: Install dependencies
+        run: npx nypm@latest i
+
+      - name: Lint
+        run: pnpm run lint
+
+  test:
+    runs-on: ubuntu-22.04
+    services:
+      redis:
+        image: redis:latest
+        ports:
+          - "6379:6379"
+
+    strategy:
+      matrix:
+        node-version: [ 21 ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - name: "Installing on ${{ matrix.node-version }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npx nypm@latest i
+
+
+      - name: Prepare
+        run:  pnpm dev:prepare
+
+      - name: Test
+        run: pnpm run test
+        env:
+          NUXT_REDIS_URL: "redis://localhost:${{ job.services.redis.ports['6379'] }}"
