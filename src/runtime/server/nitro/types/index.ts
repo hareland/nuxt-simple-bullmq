@@ -6,7 +6,7 @@ export type JobHandler = (props: JobHandlerPayload) => Promise<never | void>
 export type RawJobHandler = (props: JobHandlerPayload) => Promise<void>
 export type ParsedJobHandlerPayload<PL> = { data: PL, logger: ConsolaInstance }
 export type ParsedJobHandler<Payload> = (props: ParsedJobHandlerPayload<Payload>) => Promise<void>
-export type JobDefinition = RawJobHandler | { handler: RawJobHandler }
+export type JobDefinition = RawJobHandler | { handler: RawJobHandler, maxConcurrency?: number }
 
 export type WorkerDefinition = {
   [jobName: string]: JobDefinition

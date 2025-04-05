@@ -59,6 +59,7 @@ export const defineBullMqRedisWorker = (
       connection: {
         url: redisUrl,
       },
+      concurrency: 1,
     },
   )
 
