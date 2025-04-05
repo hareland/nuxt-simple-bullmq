@@ -1,6 +1,7 @@
 import { Queue } from 'bullmq'
 import { consola } from 'consola'
 import type { DebounceOptions } from 'bullmq/dist/esm/interfaces/debounce-options'
+import type { ZodSchema } from 'zod'
 import { useRuntimeConfig } from '#imports'
 
 export const wrapQueue = (queue: Queue) => {
@@ -61,4 +62,16 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
   queues.set(name, wrappedQueue)
 
   return wrappedQueue
+}
+
+export const dispatchValidatedEvent = async (eventName: string, schema: ZodSchema, payload: unknown, queueName = 'default') => {
+  const { data, error } = await schema.safeParseAsync(payload)
+
+  if (error) throw error
+  const queue = useQueue(queueName)
+  if (!queue) {
+    throw new Error(`Queue ${queueName} not found`)
+  }
+
+  return queue.emit(eventName, data)
 }
