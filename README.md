@@ -46,7 +46,8 @@ That's it! You can now use Nuxt bullmq module in your Nuxt app ✨
 
 **Validating your handlers in a worker**
 
-```typescript ./server/queue/sendWelcomeEmail.ts
+```typescript
+// ./server/queue/sendWelcomeEmail.ts
 import { z } from 'zod';
 
 export default defineZodValidatedJobHandler(
@@ -55,7 +56,8 @@ export default defineZodValidatedJobHandler(
 );
 ```
 
-```typescript ./server/workers/default,ts
+```typescript 
+// ./server/workers/default,ts
 import sendWelcomeEmail from '~~/server/queue/email/sendWelcomeEmail';
 
 export default defineWorker('default', {
@@ -63,7 +65,8 @@ export default defineWorker('default', {
 });
 ```
 
-```typescript ./server/route|api/name.ts
+```typescript
+// ./server/route|api/name.ts
 import { useQueue } from '#imports'
 
 //e.g using event handlers
