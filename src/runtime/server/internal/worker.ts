@@ -2,6 +2,7 @@ import type { ConsolaInstance } from 'consola'
 import { consola } from 'consola'
 import type { Job } from 'bullmq'
 import { Worker } from 'bullmq'
+import { j } from 'unplugin-vue-router/types-CTGkmk9e'
 import type { JobHandler, WorkerDefinition } from '~/src/runtime/server/nitro/types'
 
 const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jobName: string): JobHandler => {

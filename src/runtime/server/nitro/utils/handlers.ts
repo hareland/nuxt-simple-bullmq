@@ -15,6 +15,14 @@ export function defineZodValidatedJobHandler<
       throw new Error(`Job failed due to schema mismatch  ${job.id}`)
     }
 
+    if (!data) {
+      logger.info('No valid payload.')
+      throw new Error('Invalid payload')
+    }
+    else if (typeof data === 'object' && Object.keys(data).length === 0) {
+      throw new Error('Invalid payload')
+    }
+
     return handler({ data, logger })
   }
 }
