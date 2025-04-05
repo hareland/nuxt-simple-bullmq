@@ -9,7 +9,7 @@ Simple Nuxt 3 module using BullMQ and Redis for doing amazing things.
 
 **NOTE**
 
-This is only tested with NodeJS 21 (see test workflows/files for more)
+This is only tested with NodeJS 21 (not cloudflare/vercel etc) and Nuxt 4 with experimental features (see test workflows/files for more)
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/nuxt-simple-bullmq?file=playground%2Fapp.vue) -->
