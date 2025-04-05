@@ -7,6 +7,9 @@ export const wrapQueue = (queue: Queue) => {
     async emit(name: string, payload: unknown) {
       await queue.add(name, payload)
     },
+    async close() {
+      await queue.close()
+    },
   }
 }
 const queues = new Map<string, ReturnType<typeof wrapQueue>>()
@@ -28,6 +31,9 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
     return {
       async emit(name: string, payload: unknown): Promise<void> {
         logger.info(name, payload)
+      },
+      async close() {
+
       },
     }
   }
