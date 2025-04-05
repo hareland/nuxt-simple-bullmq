@@ -7,8 +7,12 @@ export function defineZodValidatedJobHandler<
   return async ({ job, logger }) => {
     const { data, success, error } = await schema.safeParseAsync(job.data)
 
-    if (!success) {
+    if (error) {
       throw new Error(`Error parsing job: ${error.message}`)
+    }
+
+    if (!success) {
+      throw new Error(`Job failed due to schema mismatch  ${job.id}`)
     }
 
     return handler({ data, logger })
