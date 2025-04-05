@@ -10,7 +10,7 @@ export type JobDefinition = RawJobHandler | { handler: RawJobHandler, maxConcurr
 
 export type WorkerDefinition = {
   [jobName: string]: JobDefinition | undefined
-  catchall?: JobDefinition
+  catchAll?: JobDefinition
 }
 
 // ✅ use the generics here explicitly to match your instantiation

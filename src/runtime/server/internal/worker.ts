@@ -6,7 +6,7 @@ import type { JobHandler, WorkerDefinition } from '~/src/runtime/server/nitro/ty
 
 const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jobName: string): JobHandler => {
   let handlerDefinition = definition[jobName]
-  const catchAllDefinition = definition.catchall || undefined
+  const catchAllDefinition = definition.catchAll || undefined
 
   if (!handlerDefinition && catchAllDefinition) {
     handlerDefinition = catchAllDefinition
