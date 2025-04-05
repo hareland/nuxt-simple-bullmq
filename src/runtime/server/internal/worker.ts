@@ -5,9 +5,13 @@ import { Worker } from 'bullmq'
 import type { JobHandler, WorkerDefinition } from '~/src/runtime/server/nitro/types'
 
 const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jobName: string): JobHandler => {
-  const handlerDefinition = definition[jobName]
+  let handlerDefinition = definition[jobName]
+  const catchAllDefinition = definition.catchall || undefined
 
-  if (!handlerDefinition) {
+  if (!handlerDefinition && catchAllDefinition) {
+    handlerDefinition = catchAllDefinition
+  }
+  else if (!handlerDefinition) {
     throw new Error(`Unknown handler: ${queueName}.${jobName}`)
   }
 

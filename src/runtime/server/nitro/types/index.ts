@@ -9,7 +9,8 @@ export type ParsedJobHandler<Payload> = (props: ParsedJobHandlerPayload<Payload>
 export type JobDefinition = RawJobHandler | { handler: RawJobHandler, maxConcurrency?: number }
 
 export type WorkerDefinition = {
-  [jobName: string]: JobDefinition
+  [jobName: string]: JobDefinition | undefined
+  catchall?: JobDefinition
 }
 
 // ✅ use the generics here explicitly to match your instantiation
