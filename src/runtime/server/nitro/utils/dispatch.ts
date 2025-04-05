@@ -1,11 +1,25 @@
 import { Queue } from 'bullmq'
 import { consola } from 'consola'
+import type { DebounceOptions } from 'bullmq/dist/esm/interfaces/debounce-options'
 import { useRuntimeConfig } from '#imports'
 
 export const wrapQueue = (queue: Queue) => {
   return {
-    async emit(name: string, payload: unknown) {
-      await queue.add(name, payload)
+    async emit(name: string, payload: unknown, { delay, deduplicationId, ttl }: { delay?: number, deduplicationId?: string, ttl?: number } = {}) {
+      let deduplication: DebounceOptions | undefined = undefined
+      if (!ttl && deduplicationId) {
+        deduplication = { id: deduplicationId }
+      }
+      else if (ttl && !deduplicationId) {
+        deduplication = { id: name, ttl }
+      }
+      else if (ttl && deduplicationId) {
+        deduplication = { id: deduplicationId, ttl }
+      }
+      await queue.add(name, payload, {
+        delay,
+        deduplication,
+      })
     },
     async close() {
       await queue.close()
