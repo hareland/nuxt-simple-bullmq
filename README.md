@@ -30,6 +30,16 @@ Install the module to your Nuxt application with one command:
 npx nuxi module add nuxt-simple-bullmq
 ```
 
+## Add the config to your nuxt.config.ts
+```json
+runtimeConfig: {
+    redis: {
+      url: 'redis://localhost:6379',
+    },
+}
+```
+**or use `NUXT_REDIS_URL` in your $environment**
+
 That's it! You can now use Nuxt bullmq module in your Nuxt app ✨
 
 
