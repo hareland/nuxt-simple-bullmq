@@ -5,13 +5,13 @@ export function defineZodValidatedJobHandler<
   Schema extends ZodSchema,
 >(handler: ParsedJobHandler<zInfer<Schema>>, schema: Schema): RawJobHandler {
   return async ({ job, logger }) => {
-    const parsed = await schema.safeParseAsync(job.data)
+    const { data, success, error } = await schema.safeParseAsync(job.data)
 
-    if (!parsed.success) {
-      throw new Error(`Error parsing job: ${parsed.error.message}`)
+    if (!success) {
+      throw new Error(`Error parsing job: ${error.message}`)
     }
 
-    return handler({ data: parsed, logger })
+    return handler({ data, logger })
   }
 }
 

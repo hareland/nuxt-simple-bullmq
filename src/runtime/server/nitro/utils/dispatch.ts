@@ -37,7 +37,6 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
       },
     }
   }
-  console.log(runtime.redis.url)
   const queue = new Queue(name, {
     connection: {
       url: runtime.redis.url!,
