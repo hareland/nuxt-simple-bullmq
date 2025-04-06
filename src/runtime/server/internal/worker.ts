@@ -33,7 +33,7 @@ const jobRouter = (queueName: string, definition: WorkerDefinition, logger: Cons
   return async (job: Job) => {
     logger.info(`Processing ${job.name}#${job.id}`)
     const handler = resolveQueueHandler(queueName, definition, job.name)
-    await handler({ job, logger })
+    await handler({ job, logger: logger.withTag(`worker:${queueName}:${job.name}`) })
     logger.info(`Completed ${job.name}#${job.id}`)
   }
 }
@@ -41,9 +41,10 @@ export const defineBullMqRedisWorker = (
   queueName: string,
   definition: WorkerDefinition,
   redisUrl?: string,
+  { logger: providedLogger }: { logger?: ConsolaInstance } = {},
 ): undefined | Worker => {
   const startedAt = Date.now()
-  const logger = consola.withTag(`plugin:worker:${queueName}`)
+  const logger = providedLogger || consola.withTag(`bullmq:worker:${queueName}`)
   if (import.meta.prerender) {
     logger.info('prerender=skip')
     return undefined

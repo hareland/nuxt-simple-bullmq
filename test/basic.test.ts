@@ -1,26 +1,17 @@
-import { fileURLToPath } from 'node:url'
 import { describe, it, expect } from 'vitest'
-import { setup } from '@nuxt/test-utils/e2e'
-import { Queue } from 'bullmq'
+import { consola } from 'consola'
 import { defineBullMqRedisWorker } from '../src/runtime/server/internal/worker'
+import { createBullMqRedisQueue } from '../src/runtime/server/internal/queue'
 
-describe('does its job', async () => {
-  await setup({
-    rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
-    server: true,
-  })
-
+describe('unit test', async () => {
   const redisUrl = process.env.NUXT_REDIS_URL || 'redis://localhost:6379'
 
-  it('handle a job', async () => {
+  it('handle a job for bullmq', async () => {
+    const logger = consola.withTag('test:job')
     const queueName = '_test'
     const eventName = 'test'
     const eventBody = { message: 'test' }
-    const queue = new Queue(queueName, {
-      connection: {
-        url: redisUrl,
-      },
-    })
+    const queue = createBullMqRedisQueue(queueName, { logger, redisUrl })
 
     const promise = new Promise((resolve, reject) => {
       try {
@@ -38,11 +29,13 @@ describe('does its job', async () => {
         reject(e)
       }
     })
-    await queue.add(eventName, eventBody)
+    await queue.emit(eventName, eventBody)
 
-    expect(await promise).containSubset({
+    const expectedJobResult = {
       name: eventName,
+      queueName,
       context: eventBody,
-    })
+    }
+    expect(await promise).containSubset(expectedJobResult)
   })
 })

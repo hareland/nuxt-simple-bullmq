@@ -13,7 +13,6 @@ export type WorkerDefinition = {
   catchAll?: JobDefinition
 }
 
-// ✅ use the generics here explicitly to match your instantiation
 export type DefinedWorker = {
   queueName: string
   worker: Worker<never, void>
@@ -25,3 +24,10 @@ export type ReadyWorker = () => DefinedWorker
 export type Manifest = {
   workers: DefinedWorker[]
 }
+
+// todo: decouple from BullMQ "job" instance
+// export interface WorkerJob {
+//   id: string
+//   name: string
+//   data: never
+// }

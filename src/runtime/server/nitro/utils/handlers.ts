@@ -10,19 +10,19 @@ export function defineZodValidatedJobHandler<
 
       if (error) {
         const msg = `Error parsing job: ${error.message}`
-        logger.debug(msg)
+        logger.info(msg)
         throw new Error(msg)
       }
 
       if (!success) {
         const msg = `Job failed due to schema mismatch  ${job.id}`
-        logger.debug(msg)
+        logger.info(msg)
         throw new Error(msg)
       }
 
       const ipMessage = 'Invalid payload'
       if (!data) {
-        logger.debug(ipMessage)
+        logger.info(ipMessage)
         throw new Error(ipMessage)
       }
       else if (typeof data === 'object' && Object.keys(data).length === 0) {

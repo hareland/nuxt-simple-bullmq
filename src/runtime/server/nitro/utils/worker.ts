@@ -9,9 +9,14 @@ export const defineWorker = (
   definition: WorkerDefinition,
 ): NitroAppPlugin => {
   return defineNitroPlugin((nitroApp) => {
-    const logger = consola.withTag(`bullmq:plugin:queue:${queueName}`)
+    const logger = consola.withTag(`worker:${queueName}`)
     const redisUrl = useRuntimeConfig()?.redis?.url || process.env.NUXT_REDIS_URL!
-    const worker = defineBullMqRedisWorker(queueName, definition, redisUrl)
+    const worker = defineBullMqRedisWorker(
+      queueName,
+      definition,
+      redisUrl,
+      { logger },
+    )
 
     nitroApp.hooks.hookOnce('close', async () => {
       await worker?.close()

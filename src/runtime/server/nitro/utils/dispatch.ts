@@ -1,36 +1,15 @@
-import { Queue } from 'bullmq'
 import { consola } from 'consola'
-import type { DebounceOptions } from 'bullmq/dist/esm/interfaces/debounce-options'
 import type { ZodSchema } from 'zod'
+import type { wrapQueue } from '../../internal/queue'
+import { createBullMqRedisQueue } from '../../internal/queue'
 import { useRuntimeConfig, createError } from '#imports'
 
-export const wrapQueue = (queue: Queue) => {
-  return {
-    async emit(name: string, payload: unknown, { delay, deduplicationId, ttl }: { delay?: number, deduplicationId?: string, ttl?: number } = {}) {
-      let deduplication: DebounceOptions | undefined = undefined
-      if (!ttl && deduplicationId) {
-        deduplication = { id: deduplicationId }
-      }
-      else if (ttl && !deduplicationId) {
-        deduplication = { id: name, ttl }
-      }
-      else if (ttl && deduplicationId) {
-        deduplication = { id: deduplicationId, ttl }
-      }
-      await queue.add(name, payload, {
-        delay,
-        deduplication,
-      })
-    },
-    async close() {
-      await queue.close()
-    },
-  }
-}
+export { wrapQueue } from '../../internal/queue'
+
 const queues = new Map<string, ReturnType<typeof wrapQueue>>()
 
 export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
-  const logger = consola.withTag('bullmq:dispatch')
+  const logger = consola.withTag(`queue:${name}`)
   if (queues.has(name) && queues.get(name) !== undefined) {
     const cand = queues.get(name)
     if (cand) {
@@ -52,16 +31,9 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
       },
     }
   }
-  const queue = new Queue(name, {
-    connection: {
-      url: runtime.redis.url!,
-    },
-  })
-
-  const wrappedQueue = wrapQueue(queue)
-  queues.set(name, wrappedQueue)
-
-  return wrappedQueue
+  const queue = createBullMqRedisQueue(name, { logger, redisUrl: runtime.redis.url })
+  queues.set(name, queue)
+  return queue
 }
 
 export const dispatchValidatedEvent = async (eventName: string, schema: ZodSchema, payload: unknown, queueName = 'default') => {
