@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.5
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.4...v1.3.5)
+
+### 🏡 Chore
+
+- **naming:** Move away naming convention ([3d819ca](https://github.com/hareland/nuxt-simple-bullmq/commit/3d819ca))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.3.4
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.3...v1.3.4)
