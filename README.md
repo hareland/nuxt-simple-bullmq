@@ -71,9 +71,10 @@ export default defineWorker('default', {
 });
 ```
 
-### Event handlers
+### **Jobs**
 
 
+**Simple job handler**
 ```typescript
 // ./server/jobs/sendWelcomeEmail.ts
 export default defineJobHandler(({job, logger}) => {
@@ -81,7 +82,8 @@ export default defineJobHandler(({job, logger}) => {
 })
 ```
 
-**Bonus: Validated job handlers**
+**Validated job handlers**
+> Validates input before processing the job
 
 ```typescript
 // ./server/jobs/sendWelcomeEmail.ts
@@ -95,9 +97,8 @@ export default defineValidatedJobHandler(
 );
 ```
 
-## Dispatch jobs
+### **Dispatching Jobs**
 
-**Additional options and how to dispatch jobs**
 **Dispatching a single job**
 ```typescript
 // ./server/route/dispatch.ts
@@ -107,7 +108,9 @@ export default defineEventHandler(async event => {
   await dispatchJob('sendWelcomeEmail', {userId: 'abc'})
 })
 ```
+
 **Validated job dispatch**
+> This will validate the input before emitting the job to redis
 ```typescript
 // ./server/route/typed-dispatch.ts
 import {dispatchValidatedJob} from '#imports'
@@ -122,7 +125,8 @@ export default defineEventHandler(async event => {
 })
 ```
 
-**Advanced usage**
+**Additional options**
+> You can pass the same options to `dispatchJob` and `dispatchValidatedJob` as the last argument.
 ```typescript
 // ./server/route/name.ts
 import {useQueue} from '#imports'
