@@ -1,6 +1,25 @@
 # Changelog
 
 
+## v1.2.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.1.0...v1.2.0)
+
+### 🚀 Enhancements
+
+- **typing:** Typed parameters ([69c5ef2](https://github.com/hareland/nuxt-simple-bullmq/commit/69c5ef2))
+- **tests:** Improved tests ([9ea074b](https://github.com/hareland/nuxt-simple-bullmq/commit/9ea074b))
+- **deps:** Add defu pkg ([d2fbe5d](https://github.com/hareland/nuxt-simple-bullmq/commit/d2fbe5d))
+- **handlers:** Add defineJobHandler ([c2df747](https://github.com/hareland/nuxt-simple-bullmq/commit/c2df747))
+
+### 🏡 Chore
+
+- **docs:** Update docs ([35aecb2](https://github.com/hareland/nuxt-simple-bullmq/commit/35aecb2))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.1.0
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.0.17...v1.1.0)
