@@ -10,6 +10,9 @@ export const defineWorker = (
 ): NitroAppPlugin => {
   return defineNitroPlugin((nitroApp) => {
     const logger = consola.withTag(`worker:${queueName}`)
+
+    // todo: bind listeners from registered listeners (in filesystem) using nuxt module init.
+
     const redisUrl = useRuntimeConfig()?.redis?.url || process.env.NUXT_REDIS_URL!
     const worker = defineBullMqRedisWorker(
       queueName,

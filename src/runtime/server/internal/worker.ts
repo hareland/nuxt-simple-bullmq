@@ -53,7 +53,7 @@ export const defineBullMqRedisWorker = (
   logger.info(`Starting worker`)
 
   if (!redisUrl) {
-    consola.withTag('bullmq:config').info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up')
+    logger.withTag('config').info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up')
     return undefined
   }
 
