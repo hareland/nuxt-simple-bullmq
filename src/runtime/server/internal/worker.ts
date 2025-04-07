@@ -2,6 +2,7 @@ import type { ConsolaInstance } from 'consola'
 import { consola } from 'consola'
 import type { Job } from 'bullmq'
 import { Worker } from 'bullmq'
+import defu from 'defu'
 import type { JobHandler, WorkerDefinition } from '~/src/runtime/server/nitro/types'
 
 const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jobName: string): JobHandler => {
@@ -47,10 +48,10 @@ export const defineBullMqRedisWorker = (
   queueName: string,
   definition: WorkerDefinition,
   redisUrl?: string,
-  { logger: providedLogger }: { logger?: ConsolaInstance } = {},
+  _options: { logger?: ConsolaInstance, concurrency?: number } = {},
 ): undefined | Worker => {
   const startedAt = Date.now()
-  const logger = providedLogger || consola.withTag(`bullmq:worker:${queueName}`)
+  const logger = _options.logger || consola.withTag(`bullmq:worker:${queueName}`)
   if (import.meta.prerender) {
     logger.info('prerender=skip')
     return undefined
@@ -59,9 +60,14 @@ export const defineBullMqRedisWorker = (
   logger.info(`Starting worker`)
 
   if (!redisUrl) {
-    consola.withTag('bullmq:config').info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up')
+    logger.withTag('config').info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up')
     return undefined
   }
+
+  const options = defu(_options, {
+    logger,
+    concurrency: 1,
+  })
 
   const worker = new Worker(
     queueName,
@@ -70,7 +76,7 @@ export const defineBullMqRedisWorker = (
       connection: {
         url: redisUrl,
       },
-      concurrency: 1,
+      concurrency: options.concurrency,
     },
   )
 

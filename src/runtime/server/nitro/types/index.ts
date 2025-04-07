@@ -60,6 +60,6 @@ export type EventListener<Schema extends ZodSchema = ZodSchema> = {
   queueName: string
   eventName: string
   schema?: Schema
-  handle: (payload: { data: zInfer<Schema> }) => Promise<void>
-  trigger: (payload: zInfer<Schema>) => Promise<void>
+  handle: (payload: { data: Schema extends ZodSchema ? zInfer<Schema> : never }) => Promise<void>
+  trigger: (payload: Schema extends ZodSchema ? zInfer<Schema> : never) => Promise<void>
 }

@@ -64,6 +64,9 @@ export default defineWorker('default', {
   catchAll({job, logger}) {
     logger.debug(`Uncaught event: ${job.name}!`, job.data)
   }
+}, {
+  //optional: default //comment
+  concurrency: 1, //how many of each worker to run
 });
 ```
 
