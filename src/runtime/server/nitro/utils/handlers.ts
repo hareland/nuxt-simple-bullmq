@@ -2,12 +2,12 @@ import type { infer as zInfer, ZodSchema } from 'zod'
 import type { JobHandler, ParsedJobHandler, RawJobHandler } from '../types'
 
 export function defineJobHandler(handler: JobHandler): RawJobHandler {
-  return ({ job, logger }) => {
-    return handler({ job, logger })
+  return (props) => {
+    return handler(props)
   }
 }
 
-export function defineZodValidatedJobHandler<
+export function defineValidatedJobHandler<
   Schema extends ZodSchema,
 >(schema: Schema, handler: ParsedJobHandler<zInfer<Schema>>): RawJobHandler {
   return async ({ job, logger }) => {
@@ -16,7 +16,7 @@ export function defineZodValidatedJobHandler<
 
       if (error) {
         const msg = `Error parsing job: ${error.message}`
-        logger.info(msg)
+        logger.error(msg)
         throw new Error(msg)
       }
 
@@ -28,7 +28,7 @@ export function defineZodValidatedJobHandler<
 
       const ipMessage = 'Invalid payload'
       if (!data) {
-        logger.info(ipMessage)
+        logger.error(ipMessage)
         throw new Error(ipMessage)
       }
       else if (typeof data === 'object' && Object.keys(data).length === 0) {
@@ -44,5 +44,5 @@ export function defineZodValidatedJobHandler<
   }
 }
 
-// todo: definePublicJobListener
-// todo: defineAuthenticatedJobListener extends definePublicJobListener
+// todo: definePublicEventListener
+// todo: defineAuthenticatedEventListener extends definePublicEventListener

@@ -26,7 +26,7 @@ describe('wrapQueue', () => {
     const workPromise = new Promise((resolve, reject) => {
       let attempts = 0
       const interval = setInterval(() => {
-        if (queue.jobs.length > 0) resolve(queue.jobs)
+        if (queue.events.length > 0) resolve(queue.events)
         attempts++
         clearInterval(interval)
       }, 10)

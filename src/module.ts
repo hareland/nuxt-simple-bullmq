@@ -12,7 +12,7 @@ export interface ModuleOptions {
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'bull-mq',
+    name: 'simple-bullmq',
     configKey: 'bullMq',
   },
   // Default configuration options of the Nuxt module
@@ -55,7 +55,7 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     // // _nuxt.options.alias['#bullmq-nuxt/manifest'] = 'build a template for the types here soemhow'
-    // const queueJobList = await Promise.all(workers.map(async (file) => {
+    // const queueEventList = await Promise.all(workers.map(async (file) => {
     //   const plugin = await import(file)
     // }))
     //

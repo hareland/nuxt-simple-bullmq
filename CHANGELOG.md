@@ -1,6 +1,70 @@
 # Changelog
 
 
+## v1.4.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.5...v1.4.0)
+
+### 🚀 Enhancements
+
+- **jobs:** Pass queueName to all job handlers. ([e4094a7](https://github.com/hareland/nuxt-simple-bullmq/commit/e4094a7))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.3.5
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.4...v1.3.5)
+
+### 🏡 Chore
+
+- **naming:** Move away naming convention ([3d819ca](https://github.com/hareland/nuxt-simple-bullmq/commit/3d819ca))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.3.4
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.3...v1.3.4)
+
+### 🏡 Chore
+
+- **naming:** Move away from "jobs" concept to events ([cf002c4](https://github.com/hareland/nuxt-simple-bullmq/commit/cf002c4))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.3.3
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.2...v1.3.3)
+
+### 🏡 Chore
+
+- **docs:** Clean up README.md ([c23e87a](https://github.com/hareland/nuxt-simple-bullmq/commit/c23e87a))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.3.2
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.0...v1.3.2)
+
+### 🏡 Chore
+
+- **release:** V1.2.8 ([a9f2786](https://github.com/hareland/nuxt-simple-bullmq/commit/a9f2786))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.2.8
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.2.7...v1.2.8)
+
 ## v1.2.7
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.2.6...v1.2.7)

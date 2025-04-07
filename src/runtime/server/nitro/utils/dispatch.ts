@@ -39,7 +39,7 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
   return queue
 }
 
-export const emitEvent = (eventName: string, payload: never, options: Partial<EmitOptions & { queueName: string }> = { queueName: 'default' }) => {
+export const dispatchJob = (eventName: string, payload: unknown, options: Partial<EmitOptions & { queueName: string }> = { queueName: 'default' }) => {
   const { queueName, ...emitOptions } = defu(options, {
     queueName: 'default',
   })
@@ -48,7 +48,7 @@ export const emitEvent = (eventName: string, payload: never, options: Partial<Em
   return queue.emit(eventName, payload, emitOptions)
 }
 
-export const emitValidatedEvent = async <T extends ZodSchema>(
+export const dispatchValidatedJob = async <T extends ZodSchema>(
   eventName: string,
   schema: T,
   payload: zInfer<T>,

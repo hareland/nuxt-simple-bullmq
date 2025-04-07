@@ -2,10 +2,11 @@ import type { Worker, Job } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
 import type { ZodSchema, infer as zInfer } from 'zod'
 
-export type JobHandlerPayload = { job: Job, logger: ConsolaInstance }
+export type JobHandlerPayload = { queueName: string, job: Job, logger: ConsolaInstance }
+// todo: move this somewhere else when real "EventListener" class is taken into use.
 export type JobHandler = (props: JobHandlerPayload) => Promise<never | void>
 export type RawJobHandler = (props: JobHandlerPayload) => Promise<void>
-export type ParsedJobHandlerPayload<PL> = { data: PL, logger: ConsolaInstance, job: Job }
+export type ParsedJobHandlerPayload<PL> = { data: PL } & JobHandlerPayload
 export type ParsedJobHandler<Payload> = (props: ParsedJobHandlerPayload<Payload>) => Promise<void>
 export type JobDefinition = RawJobHandler | { handler: RawJobHandler, maxConcurrency?: number }
 
@@ -16,7 +17,7 @@ export type WorkerDefinition = {
 
 export type DefinedWorker = {
   queueName: string
-  worker: Worker<never, void>
+  worker: Worker<unknown, void>
   definition: WorkerDefinition
 }
 
@@ -48,7 +49,7 @@ export interface WrappedQueue {
 
   emit(
     name: string,
-    payload: never,
+    payload: unknown,
     options?: { delay?: number, deduplicationId?: string, ttl?: number }
   ): Promise<void>
 
@@ -62,10 +63,3 @@ export type EventListener<Schema extends ZodSchema = ZodSchema> = {
   handle: (payload: { data: Schema extends ZodSchema ? zInfer<Schema> : never }) => Promise<void>
   trigger: (payload: Schema extends ZodSchema ? zInfer<Schema> : never) => Promise<void>
 }
-
-// todo: decouple from BullMQ "job" instance
-// export interface WorkerJob {
-//   id: string
-//   name: string
-//   data: never
-// }

@@ -1,6 +1,6 @@
-export const buildJobNamesTemplate = (jobNameList: string[]) => {
+export const buildEventNamesTemplate = (eventNameList: string[]) => {
   return [
-    `export const jobNames = ${JSON.stringify(jobNameList, null, 2)};`,
-    `export type JobName = '${jobNameList.join('\'|\'')}';`,
+    `export const eventNames = ${JSON.stringify(eventNameList, null, 2)};`,
+    `export type EventName = '${eventNameList.join('\'|\'')}';`,
   ].join('\n')
 }

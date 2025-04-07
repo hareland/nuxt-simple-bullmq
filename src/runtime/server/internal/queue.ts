@@ -11,14 +11,14 @@ type MockQueueItem = { queueName: string, name: string, payload: never, options:
 export const createMockQueue = (queueName: string = 'default', { logger }: { logger?: ConsolaInstance } = {}) => {
   logger ||= consola.withTag(`mockQueue:${queueName}`)
   return {
-    jobs: <MockQueueItem[]>[],
+    events: <MockQueueItem[]>[],
     add(name: string, payload: never, options: never) {
       logger.info(`${queueName}.${name}`, { payload, options })
-      this.jobs.push({ queueName, name, payload, options })
+      this.events.push({ queueName, name, payload, options })
     },
     close() {
       logger.info(`${queueName}.close`)
-      this.jobs = []
+      this.events = []
     },
   }
 }

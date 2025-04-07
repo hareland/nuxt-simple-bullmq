@@ -1,4 +1,4 @@
-# Nuxt bullmq module
+# Nuxt Simple BullMQ Module
 
 [![Build](https://github.com/hareland/nuxt-simple-bullmq/actions/workflows/test.yml/badge.svg)](https://github.com/hareland/nuxt-simple-bullmq/actions/workflows/test.yml)
 [![npm version][npm-version-src]][npm-version-href]
@@ -48,32 +48,34 @@ npx nuxi module add nuxt-simple-bullmq
 
 **or use `NUXT_REDIS_URL` in your $environment**
 
-That's it! You can now use Nuxt bullmq module in your Nuxt app ✨
+That's it! You can now use BullMQ in your Nuxt app ✨
 
 ## Usage
 
 ### **Workers**
 A worker lives in its own file and each worker is registered as a separate nitro plugin.
-> **Note**: _There is no typing for emitting jobs yet :/_
+> **Note**: _There is no typing for emitting events yet :/_
 
 ```typescript 
 // ./server/workers/default,ts
-import sendWelcomeEmail from '~~/server/queue/email/sendWelcomeEmail';
 
 export default defineWorker('default', {
-  sendWelcomeEmail,
+  async sendWelcomeEmail({job, logger}) {
+    logger.info(`Sending welcome email to ${job.data.email}`)
+  },
 
-  // magic job catcher:
+  // magic catch-all event handler (for uncaught events):
   catchAll({job, logger}) {
-    logger.debug('Uncaught job!', job.data)
+    logger.debug(`Uncaught event: ${job.name}!`, job.data)
   }
 });
 ```
 
-### **Job handlers**
+### Event handlers
+
 
 ```typescript
-// ./server/queue/sendWelcomeEmail.ts
+// ./server/jobs/sendWelcomeEmail.ts
 export default defineJobHandler(({job, logger}) => {
   logger.debug(job.name, job.data)
 })
@@ -82,10 +84,10 @@ export default defineJobHandler(({job, logger}) => {
 **Bonus: Validated job handlers**
 
 ```typescript
-// ./server/queue/sendWelcomeEmail.ts
+// ./server/jobs/sendWelcomeEmail.ts
 import {z} from 'zod';
 
-export default defineZodValidatedJobHandler(
+export default defineValidatedJobHandler(
   z.object({userId: z.string()}),
   async ({data, job, logger}) => {
     // data contains the validated payload from the schema
@@ -93,14 +95,39 @@ export default defineZodValidatedJobHandler(
 );
 ```
 
-## Extras
+## Dispatch jobs
 
-**Additional options and how to emit events**
+**Additional options and how to dispatch jobs**
+**Dispatching a single job**
+```typescript
+// ./server/route/dispatch.ts
+import {dispatchJob} from '#imports'
+
+export default defineEventHandler(async event => {
+  await dispatchJob('sendWelcomeEmail', {userId: 'abc'})
+})
+```
+**Validated job dispatch**
+```typescript
+// ./server/route/typed-dispatch.ts
+import {dispatchValidatedJob} from '#imports'
+
+export default defineEventHandler(async event => {
+  await dispatchValidatedJob(
+    'sendWelcomeEmail',
+    z.object({userId: z.string()}),
+    {userId: 'abc'},
+    {queueName: 'default'},
+  )
+})
+```
+
+**Advanced usage**
 ```typescript
 // ./server/route/name.ts
 import {useQueue} from '#imports'
 
-//e.g using event handlers
+//e.g using H3 event handlers
 export default defineEventHandler(async event => {
   const queue = useQueue('default');
   await queue.emit('sendWelcomeEmail', {userId: 'some-string'}, {
@@ -108,7 +135,7 @@ export default defineEventHandler(async event => {
     queueName: 'default',
 
     //optionals without defaults
-    deduplicationId: 'some-string', // can be anything, defaults to the job name.
+    deduplicationId: 'some-string', // can be anything, defaults to the event name.
     ttl: 500, // when the deduplication should expire
     delay: 500, // a delay to when this will run (good for notifications)
   })
@@ -118,22 +145,6 @@ export default defineEventHandler(async event => {
     schema: z.object({userId: z.string()}), // optional
     //... other options 
   })
-})
-```
-
-Which can also be achieved like this:
-
-```typescript
-// ./server/route/typed-dispatch.ts
-import {emitValidatedEvent} from '#imports'
-
-export default defineEventHandler(async event => {
-  await emitValidatedEvent(
-    'sendWelcomeEmail',
-    z.object({userId: z.string()}),
-    {userId: 'abc'},
-    {queueName: 'default'},
-  )
 })
 ```
 
