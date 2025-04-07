@@ -1,6 +1,6 @@
 import type { ZodSchema } from 'zod'
 import type { EventListener } from '../types'
-import { emitEvent, emitValidatedEvent } from '~/src/runtime/server/nitro/utils/queue'
+import { emitEvent, emitValidatedEvent } from './queue'
 
 // todo: for future usage when defining file based listeners for auto registration and "triggering"
 // const listener = defineEventListener('listenToMe', {
