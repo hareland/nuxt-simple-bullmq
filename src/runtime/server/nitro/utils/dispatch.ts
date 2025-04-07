@@ -11,10 +11,10 @@ export { wrapQueue } from '../../internal/queue'
 
 const queues = new Map<string, ReturnType<typeof wrapQueue>>()
 
-export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
-  const logger = consola.withTag(`queue:${name}`)
-  if (queues.has(name)) {
-    const candidate = queues.get(name)
+export const useQueue = (queueName: string): ReturnType<typeof wrapQueue> => {
+  const logger = consola.withTag(`queue:${queueName}`)
+  if (queues.has(queueName)) {
+    const candidate = queues.get(queueName)
     if (candidate) {
       logger.debug('Queue was cached.')
       return candidate
@@ -26,16 +26,16 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
   if (!runtime?.redis?.url) {
     logger.info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up (echo mode)')
     return {
-      async emit(name: string, payload: unknown): Promise<void> {
-        logger.info(name, payload)
+      async emit(jobName: string, payload: unknown): Promise<void> {
+        logger.info(`${queueName}.${jobName}`, { payload })
       },
       async close() {
-
+        logger.info('Closing mock queue...')
       },
     }
   }
-  const queue = createBullMqRedisQueue(name, { logger, redisUrl: runtime.redis.url })
-  queues.set(name, queue)
+  const queue = createBullMqRedisQueue(queueName, { logger, redisUrl: runtime.redis.url })
+  queues.set(queueName, queue)
   return queue
 }
 

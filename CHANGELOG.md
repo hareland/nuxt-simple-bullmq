@@ -1,6 +1,90 @@
 # Changelog
 
 
+## v1.5.6
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.5...v1.5.6)
+
+### 🏡 Chore
+
+- **docs:** Update README.md ([2c92e58](https://github.com/hareland/nuxt-simple-bullmq/commit/2c92e58))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.5.5
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.4...v1.5.5)
+
+### 🏡 Chore
+
+- **docs:** Clean up docs ([3fd6716](https://github.com/hareland/nuxt-simple-bullmq/commit/3fd6716))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.5.4
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.3...v1.5.4)
+
+### 🏡 Chore
+
+- **logging:** Clean up messages ([9e05b2d](https://github.com/hareland/nuxt-simple-bullmq/commit/9e05b2d))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.5.3
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.2...v1.5.3)
+
+### 🏡 Chore
+
+- **docs:** Clean up typo ([5f5c0bd](https://github.com/hareland/nuxt-simple-bullmq/commit/5f5c0bd))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.5.2
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.1...v1.5.2)
+
+### 🏡 Chore
+
+- **docs:** Clean up docs ([d96d48f](https://github.com/hareland/nuxt-simple-bullmq/commit/d96d48f))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.5.1
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.0...v1.5.1)
+
+### 🏡 Chore
+
+- **docs:** Clean up docs ([eb32204](https://github.com/hareland/nuxt-simple-bullmq/commit/eb32204))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
+## v1.5.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.4.0...v1.5.0)
+
+### 🚀 Enhancements
+
+- **jobs:** Better handling ([1262019](https://github.com/hareland/nuxt-simple-bullmq/commit/1262019))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.4.0
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.5...v1.4.0)
