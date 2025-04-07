@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.5.6
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.5...v1.5.6)
+
+### 🏡 Chore
+
+- **docs:** Update README.md ([2c92e58](https://github.com/hareland/nuxt-simple-bullmq/commit/2c92e58))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.5.5
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.4...v1.5.5)
