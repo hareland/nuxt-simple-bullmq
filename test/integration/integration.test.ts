@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { consola } from 'consola'
-import { createBullMqRedisQueue } from '../src/runtime/server/internal/queue'
+import { createBullMqRedisQueue } from '../../src/runtime/server/internal/queue'
 
-describe('integration test', async () => {
+describe('integration test with nuxt', async () => {
   const redisUrl = process.env.NUXT_REDIS_URL || 'redis://localhost:6379'
 
   it('handle a job for bullmq on the server', async () => {
