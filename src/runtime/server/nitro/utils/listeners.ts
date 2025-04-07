@@ -21,7 +21,7 @@ export const defineEventListener = <Schema extends ZodSchema>(
     ...options,
     async trigger(payload) {
       if (!options.schema) {
-        return emitEvent(eventName, payload, options)
+        return emitEvent(eventName, payload as never, options)
       }
       return emitValidatedEvent(eventName, options.schema, payload, options)
     },
