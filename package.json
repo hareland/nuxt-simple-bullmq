@@ -1,6 +1,6 @@
 {
   "name": "nuxt-simple-bullmq",
-  "version": "1.2.8",
+  "version": "1.3.2",
   "description": "Simple Nuxt module for background tasks using bullmq",
   "repository": "https://github.com/hareland/nuxt-simple-bullmq",
   "license": "MIT",
