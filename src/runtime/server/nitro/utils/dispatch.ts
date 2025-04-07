@@ -1,8 +1,11 @@
 import { consola } from 'consola'
-import type { ZodSchema } from 'zod'
+import type { ZodSchema, infer as zInfer } from 'zod'
+import defu from 'defu'
 import type { wrapQueue } from '../../internal/queue'
 import { createBullMqRedisQueue } from '../../internal/queue'
+import { ValidationError } from '../../nitro/errors'
 import { useRuntimeConfig, createError } from '#imports'
+import type { EmitOptions } from '~/src/runtime/server/nitro/types'
 
 export { wrapQueue } from '../../internal/queue'
 
@@ -36,22 +39,33 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
   return queue
 }
 
-export const dispatchValidatedEvent = async (eventName: string, schema: ZodSchema, payload: unknown, queueName = 'default') => {
+export const emitValidatedEvent = async <T extends ZodSchema>(
+  eventName: string,
+  schema: T,
+  payload: zInfer<T>,
+  options: Partial<EmitOptions & { queueName: string }> = { queueName: 'default' },
+) => {
   const { data, error } = await schema.safeParseAsync(payload)
 
+  const { queueName, ...emitOptions } = defu(options, {
+    queueName: 'default',
+  })
+
   if (error) {
+    const err = new ValidationError(error.issues ?? [])
     throw createError({
       statusCode: 422,
       statusMessage: 'Unprocessable Entity',
-      message: error.message || 'Unexpected Entity - Unknown',
-      cause: error?.cause || error,
-      stack: error?.stack,
+      message: err.message,
+      cause: err?.cause || error,
+      stack: err?.stack,
     })
   }
+
   const queue = useQueue(queueName)
   if (!queue) {
     throw new Error(`Queue ${queueName} not found`)
   }
 
-  return queue.emit(eventName, data)
+  return queue.emit(eventName, data, emitOptions)
 }

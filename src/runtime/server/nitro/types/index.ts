@@ -1,5 +1,6 @@
 import type { Worker, Job } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
+import type { ZodSchema, infer as zInfer } from 'zod'
 
 export type JobHandlerPayload = { job: Job, logger: ConsolaInstance }
 export type JobHandler = (props: JobHandlerPayload) => Promise<never | void>
@@ -23,6 +24,35 @@ export type ReadyWorker = () => DefinedWorker
 
 export type Manifest = {
   workers: DefinedWorker[]
+}
+export type EmitOptions<T extends ZodSchema = ZodSchema> = {
+  delay?: number
+  deduplicationId?: string
+  ttl?: number
+  schema?: T
+}
+
+export interface WrappedQueue {
+  emit<T extends ZodSchema>(
+    name: string,
+    payload: zInfer<T>,
+    schema: T
+  ): Promise<void>
+
+  emit<T extends ZodSchema>(
+    name: string,
+    payload: zInfer<T>,
+    // eslint-disable-next-line @typescript-eslint/unified-signatures
+    options: EmitOptions<T>
+  ): Promise<void>
+
+  emit(
+    name: string,
+    payload: never,
+    options?: { delay?: number, deduplicationId?: string, ttl?: number }
+  ): Promise<void>
+
+  close(): Promise<void>
 }
 
 // todo: decouple from BullMQ "job" instance

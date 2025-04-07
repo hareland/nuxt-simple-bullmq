@@ -2,15 +2,51 @@ import type { DebounceOptions } from 'bullmq'
 import { Queue } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
 import { consola } from 'consola'
+import type { ZodSchema } from 'zod'
+import type { WrappedQueue, EmitOptions } from '../nitro/types'
+import { ValidationError } from '../nitro/errors'
 
-export const wrapQueue = (queue: Queue) => {
+type MockQueueItem = { queueName: string, name: string, payload: never, options: never }
+
+export const createMockQueue = (queueName: string = 'default', { logger }: { logger?: ConsolaInstance } = {}) => {
+  logger ||= consola.withTag(`mockQueue:${queueName}`)
   return {
-    async emit(name: string, payload: unknown, { delay, deduplicationId, ttl }: {
-      delay?: number
-      deduplicationId?: string
-      ttl?: number
-    } = {}) {
-      let deduplication: DebounceOptions | undefined = undefined
+    jobs: <MockQueueItem[]>[],
+    add(name: string, payload: never, options: never) {
+      logger.info(`${queueName}.${name}`, { payload, options })
+      this.jobs.push({ queueName, name, payload, options })
+    },
+    close() {
+      logger.info(`${queueName}.close`)
+      this.jobs = []
+    },
+  }
+}
+
+export const wrapQueue = (queue: Queue): WrappedQueue => {
+  return {
+    emit: async function (name: string, payload: unknown, third?: EmitOptions | ZodSchema) {
+      let schema: ZodSchema | undefined
+      let options: EmitOptions = {}
+
+      if (third && 'safeParse' in third) {
+        schema = third
+      }
+      else if (third) {
+        options = third
+        schema = third.schema
+      }
+
+      if (schema) {
+        const parsed = schema.safeParse(payload)
+        if (!parsed.success) {
+          throw new ValidationError(parsed.error?.issues || [])
+        }
+      }
+
+      const { delay, deduplicationId, ttl } = options
+
+      let deduplication: DebounceOptions | undefined
       if (!ttl && deduplicationId) {
         deduplication = { id: deduplicationId }
       }
@@ -20,11 +56,13 @@ export const wrapQueue = (queue: Queue) => {
       else if (ttl && deduplicationId) {
         deduplication = { id: deduplicationId, ttl }
       }
+
       await queue.add(name, payload, {
         delay,
         deduplication,
       })
     },
+
     async close() {
       await queue.close()
     },
@@ -38,14 +76,7 @@ export const createBullMqRedisQueue = (name: string, { logger: providedLogger, r
   const logger = providedLogger || consola.withTag('bullmq:dispatch')
   if (!redisUrl) {
     logger.info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up (echo mode)')
-    return {
-      async emit(name: string, payload: unknown): Promise<void> {
-        logger.info(name, payload)
-      },
-      async close() {
-
-      },
-    }
+    return wrapQueue(createMockQueue(name, { logger }) as never as Queue)
   }
   const queue = new Queue(name, {
     connection: {
