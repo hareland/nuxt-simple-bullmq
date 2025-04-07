@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  lint:
+  release:
     runs-on: ubuntu-22.04
 
     steps:
@@ -19,7 +19,10 @@ jobs:
       - name: Install dependencies
         run: npx nypm@latest i
 
+      - name: Build
+        run: npx nypm@latest build
+
       - name: Release
-        run: pnpm run release
+        run: npx nypm@latest run release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
