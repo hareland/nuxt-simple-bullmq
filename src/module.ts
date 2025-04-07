@@ -65,8 +65,8 @@ export default defineNuxtModule<ModuleOptions>({
     }).filter(realPath => fs.existsSync(realPath))
 
     if (listenerDirs.length === 0) {
-      const defaultListenersDir = join(_nuxt.options.serverDir, 'listeners')
-      listenerDirs.push(defaultListenersDir)
+      // const defaultListenersDir = join(_nuxt.options.serverDir, 'listeners')
+      // listenerDirs.push(defaultListenersDir)
     }
 
     const listeners: { name: string, fullPath: string }[] = []

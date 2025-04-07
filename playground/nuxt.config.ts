@@ -18,6 +18,5 @@ export default defineNuxtConfig({
 
   bullMq: {
     workerDirs: ['./server/workers'],
-    listenerDirs: ['./server/listeners'],
   },
 })
