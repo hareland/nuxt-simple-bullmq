@@ -1,5 +1,11 @@
 import type { infer as zInfer, ZodSchema } from 'zod'
-import type { ParsedJobHandler, RawJobHandler } from '../types'
+import type { JobHandler, ParsedJobHandler, RawJobHandler } from '../types'
+
+export function defineJobHandler(handler: JobHandler): RawJobHandler {
+  return ({ job, logger }) => {
+    return handler({ job, logger })
+  }
+}
 
 export function defineZodValidatedJobHandler<
   Schema extends ZodSchema,
