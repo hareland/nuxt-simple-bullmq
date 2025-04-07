@@ -93,9 +93,34 @@ export default defineZodValidatedJobHandler(
 );
 ```
 
-## Extras
+## Dispatch events
 
 **Additional options and how to emit events**
+**Emit events**
+```typescript
+// ./server/route/dispatch.ts
+import {emitEvent} from '#imports'
+
+export default defineEventHandler(async event => {
+  await emitEvent('sendWelcomeEmail', {userId: 'abc'})
+})
+```
+**Emit validated events**
+```typescript
+// ./server/route/typed-dispatch.ts
+import {emitValidatedEvent} from '#imports'
+
+export default defineEventHandler(async event => {
+  await emitValidatedEvent(
+    'sendWelcomeEmail',
+    z.object({userId: z.string()}),
+    {userId: 'abc'},
+    {queueName: 'default'},
+  )
+})
+```
+
+**Advanced usage**
 ```typescript
 // ./server/route/name.ts
 import {useQueue} from '#imports'
@@ -118,22 +143,6 @@ export default defineEventHandler(async event => {
     schema: z.object({userId: z.string()}), // optional
     //... other options 
   })
-})
-```
-
-Which can also be achieved like this:
-
-```typescript
-// ./server/route/typed-dispatch.ts
-import {emitValidatedEvent} from '#imports'
-
-export default defineEventHandler(async event => {
-  await emitValidatedEvent(
-    'sendWelcomeEmail',
-    z.object({userId: z.string()}),
-    {userId: 'abc'},
-    {queueName: 'default'},
-  )
 })
 ```
 
