@@ -86,10 +86,10 @@ export default defineJobHandler(({job, logger}) => {
 import {z} from 'zod';
 
 export default defineZodValidatedJobHandler(
+  z.object({userId: z.string()}),
   async ({data, job, logger}) => {
     // data contains the validated payload from the schema
   },
-  z.object({userId: z.string()}),
 );
 ```
 

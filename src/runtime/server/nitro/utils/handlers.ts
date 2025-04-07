@@ -9,7 +9,7 @@ export function defineJobHandler(handler: JobHandler): RawJobHandler {
 
 export function defineZodValidatedJobHandler<
   Schema extends ZodSchema,
->(handler: ParsedJobHandler<zInfer<Schema>>, schema: Schema): RawJobHandler {
+>(schema: Schema, handler: ParsedJobHandler<zInfer<Schema>>): RawJobHandler {
   return async ({ job, logger }) => {
     try {
       const { data, success, error } = await schema.safeParseAsync(job.data)
