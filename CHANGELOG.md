@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.5.2
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.1...v1.5.2)
+
+### 🏡 Chore
+
+- **docs:** Clean up docs ([d96d48f](https://github.com/hareland/nuxt-simple-bullmq/commit/d96d48f))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.5.1
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.0...v1.5.1)
