@@ -1,6 +1,6 @@
 import type { Worker, Job } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
-import type { ZodSchema, infer as zInfer} from 'zod'
+import type { ZodSchema, infer as zInfer } from 'zod'
 
 export type JobHandlerPayload = { job: Job, logger: ConsolaInstance }
 export type JobHandler = (props: JobHandlerPayload) => Promise<never | void>
