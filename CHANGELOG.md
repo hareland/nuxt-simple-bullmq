@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.5.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.4.0...v1.5.0)
+
+### 🚀 Enhancements
+
+- **jobs:** Better handling ([1262019](https://github.com/hareland/nuxt-simple-bullmq/commit/1262019))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.4.0
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.5...v1.4.0)
