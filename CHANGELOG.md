@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.6.1
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.6.0...v1.6.1)
+
+### 🩹 Fixes
+
+- **config:** Defu ([73ee093](https://github.com/hareland/nuxt-simple-bullmq/commit/73ee093))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.6.0
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.6...v1.6.0)
