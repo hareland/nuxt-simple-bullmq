@@ -17,7 +17,6 @@ export async function getFilesInDirectory(dir: string) {
   return filePaths
 }
 
-
 export async function getFilesInDirectoryRecursive(dir: string): Promise<string[]> {
   const files = await fs.promises.readdir(dir)
   const filePaths: string[] = []
@@ -28,7 +27,8 @@ export async function getFilesInDirectoryRecursive(dir: string): Promise<string[
 
     if (stat.isFile()) {
       filePaths.push(fullPath)
-    } else if (stat.isDirectory()) {
+    }
+    else if (stat.isDirectory()) {
       const subdirectoryFiles = await getFilesInDirectory(fullPath)
       filePaths.push(...subdirectoryFiles)
     }
