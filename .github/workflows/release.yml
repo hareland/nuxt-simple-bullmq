@@ -8,6 +8,11 @@ on:
 jobs:
   release:
     runs-on: ubuntu-22.04
+    services:
+      redis:
+        image: redis:latest
+        ports:
+          - "6379:6379"
 
     steps:
       - uses: actions/checkout@v4
@@ -26,3 +31,4 @@ jobs:
         run: npx nypm@latest run release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NUXT_REDIS_URL: "redis://localhost:${{ job.services.redis.ports['6379'] }}"
