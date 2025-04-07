@@ -11,10 +11,6 @@ Simple Nuxt 3 module using BullMQ and Redis for doing amazing things.
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 
 
-> **NOTE**: This is only tested with NodeJS 21 (not cloudflare/vercel etc) and **Nuxt 4 with experimental features** (see test
-workflows/files for more)
-
-
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/nuxt-simple-bullmq?file=playground%2Fapp.vue) -->
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
 
@@ -31,6 +27,9 @@ Install the module in your Nuxt application with one command:
 ```bash
 npx nuxi module add nuxt-simple-bullmq
 ```
+
+> **NOTE**: This is only tested with NodeJS 21 (not cloudflare/vercel etc) and **Nuxt 4 with experimental features** (see test
+workflows/files for more)
 
 ## Add the config
 
@@ -53,7 +52,6 @@ That's it! You can now use BullMQ in your Nuxt app ✨
 
 ### **Workers**
 A worker lives in its own file and each worker is registered as a separate nitro plugin.
-> **Note**: There is no typing for dispatching jobs - yet :/
 
 ```typescript 
 // ./server/workers/default,ts
@@ -73,6 +71,7 @@ export default defineWorker('default', {
 
 Jobs are handled through callbacks, they can be in their own files, defined directly on the worker etc.
 
+> **Note**: There is no typing for dispatching jobs - yet :/
 
 ```typescript
 // ./server/jobs/sendWelcomeEmail.ts
@@ -82,7 +81,6 @@ export default defineJobHandler(({job, logger}) => {
 ```
 
 **Validated job handlers**
-> **Note**: Validates input before processing the job
 
 ```typescript
 // ./server/jobs/sendWelcomeEmail.ts
@@ -96,6 +94,8 @@ export default defineValidatedJobHandler(
 );
 ```
 
+> **Note**: Validates input before processing the job
+
 ### **Dispatching Jobs**
 
 ```typescript
@@ -108,7 +108,6 @@ export default defineEventHandler(async event => {
 ```
 
 **Validated job dispatch**
-> This will validate the input before emitting the job to redis
 ```typescript
 // ./server/route/typed-dispatch.ts
 import {dispatchValidatedJob} from '#imports'
@@ -123,8 +122,10 @@ export default defineEventHandler(async event => {
 })
 ```
 
+> This will validate the input before emitting the job to redis
+
 **Additional options**
-> You can pass the same options to `dispatchJob` and `dispatchValidatedJob` as the last argument.
+> You can pass the same options that are passed as the third argument when calling `emit` to `dispatchJob` and `dispatchValidatedJob` as well. 
 ```typescript
 // ./server/route/name.ts
 import {useQueue} from '#imports'
