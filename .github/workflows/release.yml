@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 21
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: npx nypm@latest i
@@ -27,11 +28,13 @@ jobs:
       - name: Build
         run: npx nypm@latest run dev:prepare
 
-      - name: Release
+      - name: Git config
         run: |
           git config --global user.name 'ReleaseBot'
           git config --global user.email 'ghbot@onecode.no'
-          npx nypm@latest run release
+
+      - name: Release
+        run: npx nypm@latest run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NUXT_REDIS_URL: "redis://localhost:${{ job.services.redis.ports['6379'] }}"
