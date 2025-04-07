@@ -151,6 +151,15 @@ export default defineEventHandler(async event => {
 })
 ```
 
+## Roadmap
+
+- [X] Add handlers
+- [X] Worker per plugin
+- [X] Validation dispatch/handler
+- [ ] File based listeners (Laravel style)
+- [ ] Different lib/platform (e.g Vercel/Cloudflare)
+
+
 ## Contribution
 
 <details>
