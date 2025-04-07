@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.4.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.5...v1.4.0)
+
+### 🚀 Enhancements
+
+- **jobs:** Pass queueName to all job handlers. ([e4094a7](https://github.com/hareland/nuxt-simple-bullmq/commit/e4094a7))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.3.5
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.4...v1.3.5)
