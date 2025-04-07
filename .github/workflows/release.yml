@@ -20,7 +20,7 @@ jobs:
         run: npx nypm@latest i
 
       - name: Build
-        run: npx nypm@latest build
+        run: npx nypm@latest run build
 
       - name: Release
         run: npx nypm@latest run release
