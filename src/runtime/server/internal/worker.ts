@@ -33,7 +33,7 @@ const jobRouter = (queueName: string, definition: WorkerDefinition, logger: Cons
   return async (job: Job) => {
     logger.info(`Processing ${job.name}#${job.id}`)
     const handler = resolveQueueHandler(queueName, definition, job.name)
-    await handler({ job, logger: logger.withTag(`worker:${queueName}:${job.name}`) })
+    await handler({ job, logger: logger })
     logger.info(`Completed ${job.name}#${job.id}`)
   }
 }
