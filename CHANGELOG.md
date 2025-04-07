@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.2.7...v1.3.0)
+
+### 🚀 Enhancements
+
+- **typing:** Make emitEvent payload unknown ([2a4812d](https://github.com/hareland/nuxt-simple-bullmq/commit/2a4812d))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.2.7
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.2.6...v1.2.7)

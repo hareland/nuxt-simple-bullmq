@@ -39,7 +39,7 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
   return queue
 }
 
-export const emitEvent = (eventName: string, payload: never, options: Partial<EmitOptions & { queueName: string }> = { queueName: 'default' }) => {
+export const emitEvent = (eventName: string, payload: unknown, options: Partial<EmitOptions & { queueName: string }> = { queueName: 'default' }) => {
   const { queueName, ...emitOptions } = defu(options, {
     queueName: 'default',
   })
