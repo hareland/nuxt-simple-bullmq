@@ -1,6 +1,6 @@
 import type { Worker, Job } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
-import type { ZodSchema, infer as zInfer } from 'zod'
+import type { ZodSchema, infer as zInfer} from 'zod'
 
 export type JobHandlerPayload = { job: Job, logger: ConsolaInstance }
 export type JobHandler = (props: JobHandlerPayload) => Promise<never | void>
@@ -53,6 +53,14 @@ export interface WrappedQueue {
   ): Promise<void>
 
   close(): Promise<void>
+}
+
+export type EventListener<Schema extends ZodSchema = ZodSchema> = {
+  queueName: string
+  eventName: string
+  schema?: Schema
+  handle: (payload: { data: zInfer<Schema> }) => Promise<void>
+  trigger: (payload: zInfer<Schema>) => Promise<void>
 }
 
 // todo: decouple from BullMQ "job" instance

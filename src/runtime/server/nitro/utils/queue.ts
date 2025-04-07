@@ -13,11 +13,11 @@ const queues = new Map<string, ReturnType<typeof wrapQueue>>()
 
 export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
   const logger = consola.withTag(`queue:${name}`)
-  if (queues.has(name) && queues.get(name) !== undefined) {
-    const cand = queues.get(name)
-    if (cand) {
+  if (queues.has(name)) {
+    const candidate = queues.get(name)
+    if (candidate) {
       logger.debug('Queue was cached.')
-      return cand
+      return candidate
     }
   }
 
@@ -37,6 +37,15 @@ export const useQueue = (name: string): ReturnType<typeof wrapQueue> => {
   const queue = createBullMqRedisQueue(name, { logger, redisUrl: runtime.redis.url })
   queues.set(name, queue)
   return queue
+}
+
+export const emitEvent = (eventName: string, payload: never, options: Partial<EmitOptions & { queueName: string }> = { queueName: 'default' }) => {
+  const { queueName, ...emitOptions } = defu(options, {
+    queueName: 'default',
+  })
+
+  const queue = useQueue(queueName)
+  return queue.emit(eventName, payload, emitOptions)
 }
 
 export const emitValidatedEvent = async <T extends ZodSchema>(
