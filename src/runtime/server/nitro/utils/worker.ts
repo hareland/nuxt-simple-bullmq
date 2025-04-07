@@ -7,6 +7,7 @@ import { useRuntimeConfig, defineNitroPlugin } from '#imports'
 export const defineWorker = (
   queueName: string,
   definition: WorkerDefinition,
+  { concurrency }: { concurrency?: number } = {},
 ): NitroAppPlugin => {
   return defineNitroPlugin((nitroApp) => {
     const logger = consola.withTag(`worker:${queueName}`)
@@ -18,7 +19,7 @@ export const defineWorker = (
       queueName,
       definition,
       redisUrl,
-      { logger },
+      { logger, concurrency },
     )
 
     nitroApp.hooks.hookOnce('close', async () => {
