@@ -8,19 +8,16 @@
 
 Simple Nuxt 3 module using BullMQ and Redis for doing amazing things.
 
-**NOTE**
+- [✨ &nbsp;Release Notes](/CHANGELOG.md)
 
-This is only tested with NodeJS 21 (not cloudflare/vercel etc) and Nuxt 4 with experimental features (see test
+> **NOTE**: This is only tested with NodeJS 21 (not cloudflare/vercel etc) and **Nuxt 4 with experimental features** (see test
 workflows/files for more)
 
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
 
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/nuxt-simple-bullmq?file=playground%2Fapp.vue) -->
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
 
 ## Features
-
-<!-- Highlight some of the features your module provide here -->
 
 - ⛰ &nbsp;Foo
 - 🚠 &nbsp;Bar
@@ -28,15 +25,16 @@ workflows/files for more)
 
 ## Quick Setup
 
-Install the module to your Nuxt application with one command:
+Install the module in your Nuxt application with one command:
 
 ```bash
 npx nuxi module add nuxt-simple-bullmq
 ```
 
-## Add the config to your nuxt.config.ts
+## Add the config
 
 ```javascript
+// nuxt.config.ts
 {
   runtimeConfig: {
     redis: {
@@ -54,11 +52,10 @@ That's it! You can now use BullMQ in your Nuxt app ✨
 
 ### **Workers**
 A worker lives in its own file and each worker is registered as a separate nitro plugin.
-> **Note**: _There is no typing for emitting events yet :/_
+> **Note**: There is no typing for dispatching jobs - yet :/
 
 ```typescript 
 // ./server/workers/default,ts
-
 export default defineWorker('default', {
   async sendWelcomeEmail({job, logger}) {
     logger.info(`Sending welcome email to ${job.data.email}`)
@@ -73,8 +70,9 @@ export default defineWorker('default', {
 
 ### **Jobs**
 
+Jobs are handled through callbacks, they can be in their own files, defined directly on the worker etc.
 
-**Simple job handler**
+
 ```typescript
 // ./server/jobs/sendWelcomeEmail.ts
 export default defineJobHandler(({job, logger}) => {
@@ -83,7 +81,7 @@ export default defineJobHandler(({job, logger}) => {
 ```
 
 **Validated job handlers**
-> Validates input before processing the job
+> **Note**: Validates input before processing the job
 
 ```typescript
 // ./server/jobs/sendWelcomeEmail.ts
@@ -99,7 +97,6 @@ export default defineValidatedJobHandler(
 
 ### **Dispatching Jobs**
 
-**Dispatching a single job**
 ```typescript
 // ./server/route/dispatch.ts
 import {dispatchJob} from '#imports'
