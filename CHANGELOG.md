@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.4
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.3...v1.3.4)
+
+### 🏡 Chore
+
+- **naming:** Move away from "jobs" concept to events ([cf002c4](https://github.com/hareland/nuxt-simple-bullmq/commit/cf002c4))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.3.3
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.3.2...v1.3.3)
