@@ -16,11 +16,11 @@ describe('basic integration test', async () => {
     const promise = new Promise((resolve, reject) => {
       try {
         return defineBullMqRedisWorker(queueName, {
-          async test({ event }) {
+          async test({ job }) {
             resolve({
-              name: event.name,
-              queueName: event.queueName,
-              context: event.data,
+              name: job.name,
+              queueName: job.queueName,
+              context: job.data,
             })
           },
         }, redisUrl)

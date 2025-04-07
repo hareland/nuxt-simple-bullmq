@@ -1,41 +1,41 @@
 import type { infer as zInfer, ZodSchema } from 'zod'
-import type { EventHandler, ParsedEventHandler, RawEventHandler } from '../types'
+import type { JobHandler, ParsedJobHandler, RawJobHandler } from '../types'
 
-export function defineEventHandler(handler: EventHandler): RawEventHandler {
+export function defineJobHandler(handler: JobHandler): RawJobHandler {
   return (props) => {
     return handler(props)
   }
 }
 
-export function defineValidatedEventHandler<
+export function defineValidatedJobHandler<
   Schema extends ZodSchema,
->(schema: Schema, handler: ParsedEventHandler<zInfer<Schema>>): RawEventHandler {
-  return async ({ event, logger }) => {
+>(schema: Schema, handler: ParsedJobHandler<zInfer<Schema>>): RawJobHandler {
+  return async ({ job, logger }) => {
     try {
-      const { data, success, error } = await schema.safeParseAsync(event.data)
+      const { data, success, error } = await schema.safeParseAsync(job.data)
 
       if (error) {
-        const msg = `Error parsing event: ${error.message}`
-        logger.info(msg)
+        const msg = `Error parsing job: ${error.message}`
+        logger.error(msg)
         throw new Error(msg)
       }
 
       if (!success) {
-        const msg = `Event failed due to schema mismatch  ${event.id}`
+        const msg = `Job failed due to schema mismatch  ${job.id}`
         logger.info(msg)
         throw new Error(msg)
       }
 
       const ipMessage = 'Invalid payload'
       if (!data) {
-        logger.info(ipMessage)
+        logger.error(ipMessage)
         throw new Error(ipMessage)
       }
       else if (typeof data === 'object' && Object.keys(data).length === 0) {
         throw new Error(ipMessage)
       }
 
-      return handler({ data, logger, event })
+      return handler({ data, logger, job })
     }
     catch (err: unknown) {
       logger.error(err)

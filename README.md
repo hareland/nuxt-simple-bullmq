@@ -58,14 +58,15 @@ A worker lives in its own file and each worker is registered as a separate nitro
 
 ```typescript 
 // ./server/workers/default,ts
-import sendWelcomeEmail from '~~/server/queue/email/sendWelcomeEmail';
 
 export default defineWorker('default', {
-  sendWelcomeEmail,
+  async sendWelcomeEmail({job, logger}) {
+    logger.info(`Sending welcome email to ${job.data.email}`)
+  },
 
   // magic catch-all event handler (for uncaught events):
-  catchAll({event, logger}) {
-    logger.debug(`Uncaught event: ${event.name}!`, event.data)
+  catchAll({job, logger}) {
+    logger.debug(`Uncaught event: ${job.name}!`, job.data)
   }
 });
 ```
@@ -74,45 +75,45 @@ export default defineWorker('default', {
 
 
 ```typescript
-// ./server/queue/sendWelcomeEmail.ts
-export default defineEventHandler(({event, logger}) => {
-  logger.debug(event.name, event.data)
+// ./server/jobs/sendWelcomeEmail.ts
+export default defineJobHandler(({job, logger}) => {
+  logger.debug(job.name, job.data)
 })
 ```
 
-**Bonus: Validated event handlers**
+**Bonus: Validated job handlers**
 
 ```typescript
-// ./server/queue/sendWelcomeEmail.ts
+// ./server/jobs/sendWelcomeEmail.ts
 import {z} from 'zod';
 
-export default defineValidatedEventHandler(
+export default defineValidatedJobHandler(
   z.object({userId: z.string()}),
-  async ({data, event, logger}) => {
+  async ({data, job, logger}) => {
     // data contains the validated payload from the schema
   },
 );
 ```
 
-## Dispatch events
+## Dispatch jobs
 
-**Additional options and how to emit events**
-**Emit events**
+**Additional options and how to dispatch jobs**
+**Dispatching a single job**
 ```typescript
 // ./server/route/dispatch.ts
-import {emitEvent} from '#imports'
+import {dispatchJob} from '#imports'
 
 export default defineEventHandler(async event => {
-  await emitEvent('sendWelcomeEmail', {userId: 'abc'})
+  await dispatchJob('sendWelcomeEmail', {userId: 'abc'})
 })
 ```
-**Emit validated events**
+**Validated job dispatch**
 ```typescript
 // ./server/route/typed-dispatch.ts
-import {emitValidatedEvent} from '#imports'
+import {dispatchValidatedJob} from '#imports'
 
 export default defineEventHandler(async event => {
-  await emitValidatedEvent(
+  await dispatchValidatedJob(
     'sendWelcomeEmail',
     z.object({userId: z.string()}),
     {userId: 'abc'},
@@ -126,7 +127,7 @@ export default defineEventHandler(async event => {
 // ./server/route/name.ts
 import {useQueue} from '#imports'
 
-//e.g using event handlers
+//e.g using H3 event handlers
 export default defineEventHandler(async event => {
   const queue = useQueue('default');
   await queue.emit('sendWelcomeEmail', {userId: 'some-string'}, {
