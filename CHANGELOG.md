@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v1.6.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.6...v1.6.0)
+
+### 🚀 Enhancements
+
+- **module:** Init registration of file based listeners ([112945a](https://github.com/hareland/nuxt-simple-bullmq/commit/112945a))
+- **module:** Init registration of file based listeners ([9b40c27](https://github.com/hareland/nuxt-simple-bullmq/commit/9b40c27))
+
+### 🏡 Chore
+
+- **lint:** Fix ([0eb7ecf](https://github.com/hareland/nuxt-simple-bullmq/commit/0eb7ecf))
+- **feat:** Add worker.options {concurrency: number} ([3a8ddf5](https://github.com/hareland/nuxt-simple-bullmq/commit/3a8ddf5))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.5.6
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.5.5...v1.5.6)
