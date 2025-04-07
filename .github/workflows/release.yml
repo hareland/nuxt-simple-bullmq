@@ -33,5 +33,5 @@ jobs:
           git config --global user.email 'ghbot@onecode.no'
           npx nypm@latest run release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NUXT_REDIS_URL: "redis://localhost:${{ job.services.redis.ports['6379'] }}"
