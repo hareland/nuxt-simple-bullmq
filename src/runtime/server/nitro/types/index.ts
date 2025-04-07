@@ -2,21 +2,21 @@ import type { Worker, Job } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
 import type { ZodSchema, infer as zInfer } from 'zod'
 
-export type JobHandlerPayload = { job: Job, logger: ConsolaInstance }
-export type JobHandler = (props: JobHandlerPayload) => Promise<never | void>
-export type RawJobHandler = (props: JobHandlerPayload) => Promise<void>
-export type ParsedJobHandlerPayload<PL> = { data: PL, logger: ConsolaInstance, job: Job }
-export type ParsedJobHandler<Payload> = (props: ParsedJobHandlerPayload<Payload>) => Promise<void>
-export type JobDefinition = RawJobHandler | { handler: RawJobHandler, maxConcurrency?: number }
+export type EventHandlerPayload = { event: Job, logger: ConsolaInstance }
+export type EventHandler = (props: EventHandlerPayload) => Promise<never | void>
+export type RawEventHandler = (props: EventHandlerPayload) => Promise<void>
+export type ParsedEventHandlerPayload<PL> = { data: PL, logger: ConsolaInstance, event: Job }
+export type ParsedEventHandler<Payload> = (props: ParsedEventHandlerPayload<Payload>) => Promise<void>
+export type EventHandlerDefinition = RawEventHandler | { handler: RawEventHandler, maxConcurrency?: number }
 
 export type WorkerDefinition = {
-  [jobName: string]: JobDefinition | undefined
-  catchAll?: JobDefinition
+  [jobName: string]: EventHandlerDefinition | undefined
+  catchAll?: EventHandlerDefinition
 }
 
 export type DefinedWorker = {
   queueName: string
-  worker: Worker<never, void>
+  worker: Worker<unknown, void>
   definition: WorkerDefinition
 }
 
@@ -48,7 +48,7 @@ export interface WrappedQueue {
 
   emit(
     name: string,
-    payload: never,
+    payload: unknown,
     options?: { delay?: number, deduplicationId?: string, ttl?: number }
   ): Promise<void>
 
@@ -62,10 +62,3 @@ export type EventListener<Schema extends ZodSchema = ZodSchema> = {
   handle: (payload: { data: zInfer<Schema> }) => Promise<void>
   trigger: (payload: zInfer<Schema>) => Promise<void>
 }
-
-// todo: decouple from BullMQ "job" instance
-// export interface WorkerJob {
-//   id: string
-//   name: string
-//   data: never
-// }

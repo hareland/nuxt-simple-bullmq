@@ -1,4 +1,4 @@
-# Nuxt bullmq module
+# Nuxt Simple BullMQ Module
 
 [![Build](https://github.com/hareland/nuxt-simple-bullmq/actions/workflows/test.yml/badge.svg)](https://github.com/hareland/nuxt-simple-bullmq/actions/workflows/test.yml)
 [![npm version][npm-version-src]][npm-version-href]
@@ -48,13 +48,13 @@ npx nuxi module add nuxt-simple-bullmq
 
 **or use `NUXT_REDIS_URL` in your $environment**
 
-That's it! You can now use Nuxt bullmq module in your Nuxt app ✨
+That's it! You can now use BullMQ in your Nuxt app ✨
 
 ## Usage
 
 ### **Workers**
 A worker lives in its own file and each worker is registered as a separate nitro plugin.
-> **Note**: _There is no typing for emitting jobs yet :/_
+> **Note**: _There is no typing for emitting events yet :/_
 
 ```typescript 
 // ./server/workers/default,ts
@@ -63,31 +63,32 @@ import sendWelcomeEmail from '~~/server/queue/email/sendWelcomeEmail';
 export default defineWorker('default', {
   sendWelcomeEmail,
 
-  // magic job catcher:
-  catchAll({job, logger}) {
-    logger.debug('Uncaught job!', job.data)
+  // magic catch-all event handler (for uncaught events):
+  catchAll({event, logger}) {
+    logger.debug(`Uncaught event: ${event.name}!`, event.data)
   }
 });
 ```
 
-### **Job handlers**
+### Event handlers
+
 
 ```typescript
 // ./server/queue/sendWelcomeEmail.ts
-export default defineJobHandler(({job, logger}) => {
-  logger.debug(job.name, job.data)
+export default defineEventHandler(({event, logger}) => {
+  logger.debug(event.name, event.data)
 })
 ```
 
-**Bonus: Validated job handlers**
+**Bonus: Validated event handlers**
 
 ```typescript
 // ./server/queue/sendWelcomeEmail.ts
 import {z} from 'zod';
 
-export default defineZodValidatedJobHandler(
+export default defineValidatedEventHandler(
   z.object({userId: z.string()}),
-  async ({data, job, logger}) => {
+  async ({data, event, logger}) => {
     // data contains the validated payload from the schema
   },
 );
@@ -133,7 +134,7 @@ export default defineEventHandler(async event => {
     queueName: 'default',
 
     //optionals without defaults
-    deduplicationId: 'some-string', // can be anything, defaults to the job name.
+    deduplicationId: 'some-string', // can be anything, defaults to the event name.
     ttl: 500, // when the deduplication should expire
     delay: 500, // a delay to when this will run (good for notifications)
   })

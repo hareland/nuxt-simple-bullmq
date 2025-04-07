@@ -2,9 +2,9 @@ import type { ConsolaInstance } from 'consola'
 import { consola } from 'consola'
 import type { Job } from 'bullmq'
 import { Worker } from 'bullmq'
-import type { JobHandler, WorkerDefinition } from '~/src/runtime/server/nitro/types'
+import type { EventHandler, WorkerDefinition } from '~/src/runtime/server/nitro/types'
 
-const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jobName: string): JobHandler => {
+const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jobName: string): EventHandler => {
   let handlerDefinition = definition[jobName]
   const catchAllDefinition = definition.catchAll || undefined
 
@@ -29,12 +29,12 @@ const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jo
   throw new Error(`Invalid handler: ${queueName}.${jobName}`)
 }
 
-const jobRouter = (queueName: string, definition: WorkerDefinition, logger: ConsolaInstance) => {
-  return async (job: Job) => {
-    logger.info(`Processing ${job.name}#${job.id}`)
-    const handler = resolveQueueHandler(queueName, definition, job.name)
-    await handler({ job, logger: logger })
-    logger.info(`Completed ${job.name}#${job.id}`)
+const eventRouter = (queueName: string, definition: WorkerDefinition, logger: ConsolaInstance) => {
+  return async (event: Job) => {
+    logger.info(`Processing ${event.name}#${event.id}`)
+    const handler = resolveQueueHandler(queueName, definition, event.name)
+    await handler({ event: event, logger: logger })
+    logger.info(`Completed ${event.name}#${event.id}`)
   }
 }
 export const defineBullMqRedisWorker = (
@@ -59,7 +59,7 @@ export const defineBullMqRedisWorker = (
 
   const worker = new Worker(
     queueName,
-    jobRouter(queueName, definition, logger),
+    eventRouter(queueName, definition, logger),
     {
       connection: {
         url: redisUrl,

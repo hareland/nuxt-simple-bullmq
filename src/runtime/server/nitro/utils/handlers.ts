@@ -1,27 +1,27 @@
 import type { infer as zInfer, ZodSchema } from 'zod'
-import type { JobHandler, ParsedJobHandler, RawJobHandler } from '../types'
+import type { EventHandler, ParsedEventHandler, RawEventHandler } from '../types'
 
-export function defineJobHandler(handler: JobHandler): RawJobHandler {
-  return ({ job, logger }) => {
-    return handler({ job, logger })
+export function defineEventHandler(handler: EventHandler): RawEventHandler {
+  return (props) => {
+    return handler(props)
   }
 }
 
-export function defineZodValidatedJobHandler<
+export function defineValidatedEventHandler<
   Schema extends ZodSchema,
->(schema: Schema, handler: ParsedJobHandler<zInfer<Schema>>): RawJobHandler {
-  return async ({ job, logger }) => {
+>(schema: Schema, handler: ParsedEventHandler<zInfer<Schema>>): RawEventHandler {
+  return async ({ event, logger }) => {
     try {
-      const { data, success, error } = await schema.safeParseAsync(job.data)
+      const { data, success, error } = await schema.safeParseAsync(event.data)
 
       if (error) {
-        const msg = `Error parsing job: ${error.message}`
+        const msg = `Error parsing event: ${error.message}`
         logger.info(msg)
         throw new Error(msg)
       }
 
       if (!success) {
-        const msg = `Job failed due to schema mismatch  ${job.id}`
+        const msg = `Event failed due to schema mismatch  ${event.id}`
         logger.info(msg)
         throw new Error(msg)
       }
@@ -35,7 +35,7 @@ export function defineZodValidatedJobHandler<
         throw new Error(ipMessage)
       }
 
-      return handler({ data, logger, job })
+      return handler({ data, logger, event })
     }
     catch (err: unknown) {
       logger.error(err)
@@ -44,5 +44,5 @@ export function defineZodValidatedJobHandler<
   }
 }
 
-// todo: definePublicJobListener
-// todo: defineAuthenticatedJobListener extends definePublicJobListener
+// todo: definePublicEventListener
+// todo: defineAuthenticatedEventListener extends definePublicEventListener
