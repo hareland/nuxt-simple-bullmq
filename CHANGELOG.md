@@ -1,6 +1,32 @@
 # Changelog
 
 
+## v1.7.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.6.1...v1.7.0)
+
+### 🚀 Enhancements
+
+- **worker:** Add job token to job handler payload ([308e624](https://github.com/hareland/nuxt-simple-bullmq/commit/308e624))
+- **queue:** Add attempts and backoff strategy ([e4b97fb](https://github.com/hareland/nuxt-simple-bullmq/commit/e4b97fb))
+- **queue:** Set enableOfflineQueue to false so we can exit early in HTTP requests. ([a78ba16](https://github.com/hareland/nuxt-simple-bullmq/commit/a78ba16))
+- **queue:** Fix backoff strategy to have a default and allow passing a number to create a fixed strategy ([c0f6a9e](https://github.com/hareland/nuxt-simple-bullmq/commit/c0f6a9e))
+- **queue:** Pass lockId instead of token ([5e489f8](https://github.com/hareland/nuxt-simple-bullmq/commit/5e489f8))
+- **queue:** Pass lockId and allow returning from job listener ([0597339](https://github.com/hareland/nuxt-simple-bullmq/commit/0597339))
+
+### 📖 Documentation
+
+- Update README.md ([79f143f](https://github.com/hareland/nuxt-simple-bullmq/commit/79f143f))
+- Add comments for future implementations ([dd83e1a](https://github.com/hareland/nuxt-simple-bullmq/commit/dd83e1a))
+- Add delay example ([9c6d3a8](https://github.com/hareland/nuxt-simple-bullmq/commit/9c6d3a8))
+- Add delay example ([2b735b5](https://github.com/hareland/nuxt-simple-bullmq/commit/2b735b5))
+- Add JobNames details ([abd2f92](https://github.com/hareland/nuxt-simple-bullmq/commit/abd2f92))
+- Move validation note ([34608a5](https://github.com/hareland/nuxt-simple-bullmq/commit/34608a5))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.6.1
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.6.0...v1.6.1)
