@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.8.2
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.8.1...v1.8.2)
+
+### 📖 Documentation
+
+- Add roadmap item ([8deae76](https://github.com/hareland/nuxt-simple-bullmq/commit/8deae76))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.8.1
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.8.0...v1.8.1)
