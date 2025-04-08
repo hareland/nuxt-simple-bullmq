@@ -1,11 +1,11 @@
-import type {Worker, Job, BackoffOptions} from 'bullmq'
+import type { Worker, Job, BackoffOptions } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
 import type { ZodSchema, infer as zInfer } from 'zod'
 
-export type JobHandlerPayload = { queueName: string, job: Job, logger: ConsolaInstance, token?: string }
+export type JobHandlerPayload = { queueName: string, job: Job, logger: ConsolaInstance, lockId?: string }
 // todo: move this somewhere else when real "EventListener" class is taken into use.
-export type JobHandler = (props: JobHandlerPayload) => Promise<never | void>
-export type RawJobHandler = (props: JobHandlerPayload) => Promise<void>
+export type JobHandler = (props: JobHandlerPayload) => Promise<unknown> | Promise<void>
+export type RawJobHandler = (props: JobHandlerPayload) => Promise<unknown> | Promise<void>
 export type ParsedJobHandlerPayload<PL> = { data: PL } & JobHandlerPayload
 export type ParsedJobHandler<Payload> = (props: ParsedJobHandlerPayload<Payload>) => Promise<void>
 export type JobDefinition = RawJobHandler | { handler: RawJobHandler, maxConcurrency?: number }
