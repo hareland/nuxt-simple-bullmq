@@ -35,7 +35,7 @@ export type EmitOptions<T extends ZodSchema = ZodSchema> = {
   ttl?: number // handles the ttl for deduplication
   deduplicationId?: string
   attempts?: number
-  backoff?: BackoffOptions
+  backoff?: BackoffOptions | number
 }
 
 export interface WrappedQueue {

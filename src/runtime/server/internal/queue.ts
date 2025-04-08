@@ -1,4 +1,4 @@
-import type { DebounceOptions } from 'bullmq'
+import type { BackoffOptions, DebounceOptions } from 'bullmq'
 import { Queue } from 'bullmq'
 import type { ConsolaInstance } from 'consola'
 import { consola } from 'consola'
@@ -63,13 +63,21 @@ export const wrapQueue = (queue: Queue): WrappedQueue => {
         deduplication = { id: deduplicationId, ttl }
       }
 
+      // by default, we do not allow retries unless specified
       let attempts = 1
       if (attemptOptions) {
         attempts = attemptOptions
       }
 
-      let backoff = undefined
-      if (backoffOptions) {
+      // our default backoff strategy is always fixed and 5s
+      let backoff: BackoffOptions = { type: 'fixed', delay: 5000 }
+      if (typeof backoffOptions === 'number') {
+        backoff = {
+          type: 'fixed',
+          delay: backoffOptions,
+        }
+      }
+      else if (backoffOptions) {
         backoff = backoffOptions
       }
 
