@@ -99,6 +99,9 @@ export const createBullMqRedisQueue = (name: string, { logger: providedLogger, r
   const queue = new Queue(name, {
     connection: {
       url: redisUrl,
+      // this option enables us to fail quickly instead of keeping a HTTP request waiting when redis is unavailable
+      // todo: investigate if this is always desired in nuxt, or should be configurable
+      enableOfflineQueue: false,
     },
   })
 
