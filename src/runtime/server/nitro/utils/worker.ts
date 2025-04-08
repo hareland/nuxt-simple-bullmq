@@ -15,6 +15,8 @@ export const defineWorker = (
     // todo: bind listeners from registered listeners (in filesystem) using nuxt module init.
 
     const redisUrl = useRuntimeConfig()?.redis?.url || process.env.NUXT_REDIS_URL!
+
+    // todo: do not start the worker instantly, use some lifecycle events.
     const worker = defineBullMqRedisWorker(
       queueName,
       definition,

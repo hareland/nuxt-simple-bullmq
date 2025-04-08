@@ -77,6 +77,8 @@ export const defineBullMqRedisWorker = (
         url: redisUrl,
       },
       concurrency: options.concurrency,
+      // todo: set autorun: false and handle it in the consumer of this method
+      //  (add a start etc wrapper like in the queue)
     },
   )
 
