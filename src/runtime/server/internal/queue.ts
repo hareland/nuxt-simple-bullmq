@@ -95,11 +95,11 @@ export const wrapQueue = (queue: Queue): WrappedQueue => {
   }
 }
 
-export const createBullMqRedisQueue = (name: string, { logger: providedLogger, redisUrl }: {
+export const createBullMqRedisQueue = (name: string, { logger, redisUrl }: {
   logger?: ConsolaInstance
   redisUrl?: string
 } = {}): ReturnType<typeof wrapQueue> => {
-  const logger = providedLogger || consola.withTag('bullmq:dispatch')
+  logger ||= consola.withTag('bullmq:dispatch')
   if (!redisUrl) {
     logger.info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up (echo mode)')
     return wrapQueue(createMockQueue(name, { logger }) as never as Queue)

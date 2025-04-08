@@ -1,43 +1,11 @@
-import { consola } from 'consola'
 import type { ZodSchema, infer as zInfer } from 'zod'
 import defu from 'defu'
-import type { wrapQueue } from '../../internal/queue'
-import { createBullMqRedisQueue } from '../../internal/queue'
 import { ValidationError } from '../../nitro/errors'
-import { useRuntimeConfig, createError } from '#imports'
+import { useQueue } from './queue'
+import { createError } from '#imports'
 import type { EmitOptions } from '~/src/runtime/server/nitro/types'
 
-export { wrapQueue } from '../../internal/queue'
-
-const queues = new Map<string, ReturnType<typeof wrapQueue>>()
-
-export const useQueue = (queueName: string): ReturnType<typeof wrapQueue> => {
-  const logger = consola.withTag(`queue:${queueName}`)
-  if (queues.has(queueName)) {
-    const candidate = queues.get(queueName)
-    if (candidate) {
-      logger.debug('Queue was cached.')
-      return candidate
-    }
-  }
-
-  const runtime = useRuntimeConfig()
-
-  if (!runtime?.redis?.url) {
-    logger.info('Missing NUXT_REDIS_URL/runtimeConfig.redis.url: Not setting up (echo mode)')
-    return {
-      async emit(jobName: string, payload: unknown): Promise<void> {
-        logger.info(`${queueName}.${jobName}`, { payload })
-      },
-      async close() {
-        logger.info('Closing mock queue...')
-      },
-    }
-  }
-  const queue = createBullMqRedisQueue(queueName, { logger, redisUrl: runtime.redis.url })
-  queues.set(queueName, queue)
-  return queue
-}
+export { wrapQueue, createMockQueue } from '../../internal/queue'
 
 export const dispatchJob = (eventName: string, payload: unknown, options: Partial<EmitOptions & { queueName: string }> = { queueName: 'default' }) => {
   const { queueName, ...emitOptions } = defu(options, {
