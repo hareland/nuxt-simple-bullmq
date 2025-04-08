@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.7.1
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.7.0...v1.7.1)
+
+### 🏡 Chore
+
+- Clean up logger naming ([62a6e61](https://github.com/hareland/nuxt-simple-bullmq/commit/62a6e61))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.7.0
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.6.1...v1.7.0)
