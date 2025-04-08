@@ -6,7 +6,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-Simple Nuxt 3 module using BullMQ and Redis for doing amazing things.
+Simple Nuxt 3 module using [BullMQ](https://docs.bullmq.io/) and Redis for doing amazing things.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
 
@@ -40,6 +40,11 @@ workflows/files for more)
     redis: {
       url: 'redis://localhost:6379'
     }
+  },
+  bullMq: {
+    // Where to load defined workers from (defineWorker files)
+    // this is optional, and will default to [ '<serverDir>/workers' ]
+    workerDirs: [ '/workers' ], // base path will be your "serverDir" e.g ./server/some-path
   }
 }
 ```
@@ -106,7 +111,12 @@ export default defineValidatedJobHandler(
 import {dispatchJob} from '#imports'
 
 export default defineEventHandler(async event => {
-  await dispatchJob('sendWelcomeEmail', {userId: 'abc'})
+  await dispatchJob(
+    'sendWelcomeEmail', 
+    {userId: 'abc'},
+    // Optional:
+    {queueName: 'default', attempts: 1, backoff: {strategy: 'exponential', } },
+  )
 })
 ```
 
