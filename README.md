@@ -79,7 +79,8 @@ export default defineWorker('default', {
 
 Jobs are handled through callbacks, they can be in their own files, defined directly on the worker etc.
 
-> **Note**: There is no typing for dispatching jobs - yet :/
+> **Note**: There is no typing for dispatching jobs - yet :/ 
+One solution can be to use a constant mapping e.g `const JobNames = {someKey: 'someValue'}`
 
 ```typescript
 // ./server/jobs/sendWelcomeEmail.ts
