@@ -106,16 +106,19 @@ export default defineValidatedJobHandler(
 
 **Delaying jobs**
 ```typescript 
-// ./server/jobs/delayedExecution.ts
+// ./server/jobs/onboarding/sendTipsAndTricks.ts
 import { DelayedError } from 'bullmq';
 
 export default defineJobHandler(async ({job, logger, lockId}) => {
-  if (!await somePrecondition()) {
-    await job.moveToDelayed(Date.now() + 5_000, lockId)
+  const DELAY_MS = 1_800_000 // 30 minutes
+  
+  // do some checks...
+  if (!await userHasVerifierEmail() && !hasBeenMoreThan24HoursSinceSignUp()) {
+    await job.moveToDelayed(Date.now() + DELAY_MS, lockId)
     throw new DelayedError();
   }
 
-  logger.info('Here we are in a delayed state.')
+  logger.info('Sending Tips & Tricks to user...')
 })
   ```
 
@@ -184,7 +187,8 @@ export default defineEventHandler(async event => {
 - [X] Add handlers
 - [X] Worker per plugin
 - [X] Validation dispatch/handler
-- [ ] File based listeners (Laravel style)
+- [ ] File based listeners (Laravel style  with a "dispatch" method)
+- [ ] Flow producers
 - [ ] Different lib/platform (e.g Vercel/Cloudflare)
 
 
