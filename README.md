@@ -99,28 +99,35 @@ export default defineValidatedJobHandler(
   z.object({userId: z.string()}),
   async ({data, job, logger}) => {
     // data contains the validated payload from the schema
+    // data is also typed: {userId:string}
   },
 );
 ```
 > **Note**: Validates input before processing the job
 
 **Delaying jobs**
+
 ```typescript 
 // ./server/jobs/onboarding/sendTipsAndTricks.ts
-import { DelayedError } from 'bullmq';
+import {z} from 'zod'
+import {DelayedError} from 'bullmq';
 
-export default defineJobHandler(async ({job, logger, lockId}) => {
-  const DELAY_MS = 1_800_000 // 30 minutes
-  
-  // do some checks...
-  if (!await userHasVerifierEmail() && !hasBeenMoreThan24HoursSinceSignUp()) {
-    await job.moveToDelayed(Date.now() + DELAY_MS, lockId)
-    throw new DelayedError();
-  }
+export default defineValidatedJobHandler(
+  z.object({userId: z.string().uuid()}),
+  async ({data: {userId}, job, logger, lockId}) => {
+    const DELAY_MS = 1_800_000 // 30 minutes
 
-  logger.info('Sending Tips & Tricks to user...')
-})
-  ```
+    // do some checks...
+    if (!await userHasVerifierEmail() && !hasBeenMoreThan24HoursSinceSignUp()) {
+      logger.info('Preconditions not met, delaying job...')
+      await job.moveToDelayed(Date.now() + DELAY_MS, lockId)
+      throw new DelayedError();
+    }
+
+    logger.info(`Sending Tips & Tricks to user ${userId}`)
+  },
+)
+```
 
 ### **Dispatching Jobs**
 
