@@ -61,7 +61,7 @@ A worker lives in its own file and each worker is registered as a separate nitro
 ```typescript 
 // ./server/workers/default,ts
 export default defineWorker('default', {
-  async sendWelcomeEmail({job, logger}) {
+  async sendWelcomeEmail({job, logger, lockId}) {
     logger.info(`Sending welcome email to ${job.data.email}`)
   },
 
@@ -74,6 +74,20 @@ export default defineWorker('default', {
   concurrency: 1, //how many of each worker to run
 });
 ```
+
+**Delaying jobs**
+```typescript 
+// ./server/workers/default,ts
+export default defineWorker('default', {
+  async sendWelcomeEmail({job, logger, lockId}) {
+    if (!somePrecondition) {
+      return job.moveToDelayed(Date.now() + 5_000, lockId)
+    }
+    
+    logger.info('Here we are in a delayed state.')
+  },
+})
+  ```
 
 ### **Jobs**
 
