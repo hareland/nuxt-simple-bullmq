@@ -34,7 +34,7 @@ const jobRouter = (queueName: string, definition: WorkerDefinition, logger: Cons
   return async (job: Job, token?: string) => {
     logger.info(`Processing ${job.name}#${job.id}`)
     const handler = resolveQueueHandler(queueName, definition, job.name)
-    return handler({ queueName, job: job, logger: logger, token })
+    return handler({ queueName, job: job, logger: logger, lockId: token })
       .then(() => {
         logger.info(`Completed ${job.name}#${job.id}`)
       })
