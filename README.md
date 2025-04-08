@@ -75,20 +75,6 @@ export default defineWorker('default', {
 });
 ```
 
-**Delaying jobs**
-```typescript 
-// ./server/workers/default,ts
-export default defineWorker('default', {
-  async sendWelcomeEmail({job, logger, lockId}) {
-    if (!somePrecondition) {
-      return job.moveToDelayed(Date.now() + 5_000, lockId)
-    }
-    
-    logger.info('Here we are in a delayed state.')
-  },
-})
-  ```
-
 ### **Jobs**
 
 Jobs are handled through callbacks, they can be in their own files, defined directly on the worker etc.
@@ -115,6 +101,18 @@ export default defineValidatedJobHandler(
   },
 );
 ```
+
+**Delaying jobs**
+```typescript 
+// ./server/jobs/delayedExecution.ts
+export default defineJobHandler(async ({job, logger, lockId}) => {
+  if (!await somePrecondition()) {
+    return job.moveToDelayed(Date.now() + 5_000, lockId)
+  }
+
+  logger.info('Here we are in a delayed state.')
+})
+  ```
 
 > **Note**: Validates input before processing the job
 
