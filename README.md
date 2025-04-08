@@ -107,9 +107,12 @@ export default defineValidatedJobHandler(
 **Delaying jobs**
 ```typescript 
 // ./server/jobs/delayedExecution.ts
+import { DelayedError } from 'bullmq';
+
 export default defineJobHandler(async ({job, logger, lockId}) => {
   if (!await somePrecondition()) {
-    return job.moveToDelayed(Date.now() + 5_000, lockId)
+    await job.moveToDelayed(Date.now() + 5_000, lockId)
+    throw new DelayedError();
   }
 
   logger.info('Here we are in a delayed state.')
