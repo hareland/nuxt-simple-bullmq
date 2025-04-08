@@ -36,12 +36,9 @@ const jobRouter = (queueName: string, definition: WorkerDefinition, logger: Cons
     const jobLogger = logger.withTag(`${job.name}`)
     const handler = resolveQueueHandler(queueName, definition, job.name)
     return handler({ queueName, job: job, logger: jobLogger, lockId: token })
-      .then(() => {
+      .then((result) => {
         logger.info(`Completed ${job.name}#${job.id}`)
-      })
-      .catch((e) => {
-        jobLogger.error(e)
-        throw e
+        return result
       })
   }
 }
