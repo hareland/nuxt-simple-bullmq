@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v1.8.0
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.7.4...v1.8.0)
+
+### 🚀 Enhancements
+
+- **flows:** Add undocumented flowproducer base ([40990fd](https://github.com/hareland/nuxt-simple-bullmq/commit/40990fd))
+
+### 📖 Documentation
+
+- Update usage of delaying a running job ([a167a1a](https://github.com/hareland/nuxt-simple-bullmq/commit/a167a1a))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.7.4
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.7.3...v1.7.4)
