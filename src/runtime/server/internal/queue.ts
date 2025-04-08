@@ -44,7 +44,13 @@ export const wrapQueue = (queue: Queue): WrappedQueue => {
         }
       }
 
-      const { delay, deduplicationId, ttl } = options
+      const {
+        delay,
+        deduplicationId,
+        ttl,
+        attempts: attemptOptions,
+        backoff: backoffOptions,
+      } = options
 
       let deduplication: DebounceOptions | undefined
       if (!ttl && deduplicationId) {
@@ -57,9 +63,21 @@ export const wrapQueue = (queue: Queue): WrappedQueue => {
         deduplication = { id: deduplicationId, ttl }
       }
 
+      let attempts = 1
+      if (attemptOptions) {
+        attempts = attemptOptions
+      }
+
+      let backoff = undefined
+      if (backoffOptions) {
+        backoff = backoffOptions
+      }
+
       await queue.add(name, payload, {
         delay,
         deduplication,
+        attempts,
+        backoff,
       })
     },
 

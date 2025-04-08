@@ -1,4 +1,4 @@
-import type { Worker, Job } from 'bullmq'
+import type {Worker, Job, BackoffOptions} from 'bullmq'
 import type { ConsolaInstance } from 'consola'
 import type { ZodSchema, infer as zInfer } from 'zod'
 
@@ -27,10 +27,15 @@ export type Manifest = {
   workers: DefinedWorker[]
 }
 export type EmitOptions<T extends ZodSchema = ZodSchema> = {
-  delay?: number
-  deduplicationId?: string
-  ttl?: number
   schema?: T
+  delay?: number
+  // todo: move this TTL and deduplicationId to dedicated "deduplication" object
+  //  {deduplication?: {id?: string, ttl:number} | number}
+  //    ^- if it is a number, we instantly just use the job name as the id
+  ttl?: number // handles the ttl for deduplication
+  deduplicationId?: string
+  attempts?: number
+  backoff?: BackoffOptions
 }
 
 export interface WrappedQueue {
