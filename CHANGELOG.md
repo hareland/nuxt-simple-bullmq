@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.8.1
+
+[compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.8.0...v1.8.1)
+
+### 🩹 Fixes
+
+- Flowproducer import ([4b581bb](https://github.com/hareland/nuxt-simple-bullmq/commit/4b581bb))
+
+### ❤️ Contributors
+
+- Hareland <packagist@proton.me>
+
 ## v1.8.0
 
 [compare changes](https://github.com/hareland/nuxt-simple-bullmq/compare/v1.7.4...v1.8.0)
