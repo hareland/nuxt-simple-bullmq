@@ -102,6 +102,7 @@ export default defineValidatedJobHandler(
   },
 );
 ```
+> **Note**: Validates input before processing the job
 
 **Delaying jobs**
 ```typescript 
@@ -114,8 +115,6 @@ export default defineJobHandler(async ({job, logger, lockId}) => {
   logger.info('Here we are in a delayed state.')
 })
   ```
-
-> **Note**: Validates input before processing the job
 
 ### **Dispatching Jobs**
 
