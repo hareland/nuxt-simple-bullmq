@@ -32,14 +32,9 @@ const resolveQueueHandler = (queueName: string, definition: WorkerDefinition, jo
 
 const jobRouter = (queueName: string, definition: WorkerDefinition, logger: ConsolaInstance) => {
   return async (job: Job, token?: string) => {
-    logger.info(`Processing ${job.name}#${job.id}`)
     const jobLogger = logger.withTag(`${job.name}`)
     const handler = resolveQueueHandler(queueName, definition, job.name)
     return handler({ queueName, job: job, logger: jobLogger, lockId: token })
-      .then((result) => {
-        logger.info(`Completed ${job.name}#${job.id}`)
-        return result
-      })
   }
 }
 export const defineBullMqRedisWorker = (
@@ -94,6 +89,22 @@ export const defineBullMqRedisWorker = (
 
   worker.on('closed', () => {
     logger.info('Worker closed.')
+  })
+
+  worker.on('stalled', (jobId) => {
+    logger.info(`Stalled job #${jobId}`)
+  })
+
+  worker.on('active', (job) => {
+    logger.withTag(job.name).info(`Processing #${job.id || 'n/a'}`)
+  })
+
+  worker.on('completed', (job) => {
+    logger.withTag(job.name).info(`Completed #${job.id || 'n/a'}`)
+  })
+
+  worker.on('progress', (job, p) => {
+    logger.withTag(job.name).info(`Progress #${job.id}: ${p}`)
   })
 
   return worker
