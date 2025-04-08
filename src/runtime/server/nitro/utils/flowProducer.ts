@@ -1,5 +1,5 @@
 import { consola } from 'consola'
-import { wrapFlowProducer, createBullMqFlowProducer } from '~/src/runtime/server/internal/flowProducer'
+import { wrapFlowProducer, createBullMqFlowProducer } from '../../internal/flowProducer'
 import { useRuntimeConfig } from '#imports'
 
 const flowProducers = new Map<string, ReturnType<typeof wrapFlowProducer>>()
