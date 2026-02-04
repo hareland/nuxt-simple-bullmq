@@ -6,6 +6,9 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
+
+> I could suggest using [nuxt-processor](https://github.com/aidanhibbard/nuxt-processor) if you want a stable solution that can separate each worker.
+
 Simple Nuxt 3 module using [BullMQ](https://docs.bullmq.io/) and Redis for doing amazing things.
 
 - [✨ &nbsp;Release Notes](/CHANGELOG.md)
